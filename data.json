@@ -1,0 +1,215 @@
+
+{
+  "slides": [
+    {
+      "image": "https://i.imgur.com/WgE6xfs.png",
+      "title": { "en": "Advanced Mobility Solutions", "ar": "حلول تنقل متقدمة" },
+      "subtitle": { "en": "Advanced technology for freedom and superior performance.", "ar": "تقنية متطورة لحرية وأداء فائقين." }
+    },
+    {
+      "image": "https://i.imgur.com/j8VE1Kp.jpeg",
+      "title": { "en": "Committed to Quality of Life", "ar": "ملتزمون بجودة الحياة" },
+      "subtitle": { "en": "Achieving the highest standards of quality and innovation to meet customer needs.", "ar": "نحقق أعلى معايير الجودة والابتكار لتلبية احتياجات العملاء." }
+    },
+    {
+      "image": "https://i.imgur.com/eATpi8j.jpeg",
+      "title": { "en": "Customized For Your Needs", "ar": "مخصصة لاحتياجاتك" },
+      "subtitle": { "en": "Specializing in importing and customizing high-quality mobility devices.", "ar": "متخصصون في استيراد وتفصيل الأجهزة عالية الجودة." }
+    }
+  ],
+  "products": [
+    {
+      "id": "eos",
+      "name": { "en": "EOS", "ar": "إيوس" },
+      "image": "https://i.imgur.com/t37N5oN.png",
+      "otherImages": ["https://i.imgur.com/p4gxxPo.png", "https://i.imgur.com/MkQMqpR.png", "https://i.imgur.com/wAL4HVq.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "A rigid titanium frame wheelchair, combining lightness and strength.", "ar": "كرسي متحرك بإطار صلب من التيتانيوم، يجمع بين الخفة والقوة." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Titanium rigid frame", "ar": "إطار صلب من التيتانيوم" },
+        { "en": "Titanium footrest", "ar": "مسند قدم من التيتانيوم" },
+        { "en": "Carbon fibre sideguards (removable on request)", "ar": "واقيات جانبية من ألياف الكربون (قابلة للإزالة عند الطلب)" },
+        { "en": "Collapsible tilt and height adjustable backrest", "ar": "مسند ظهر قابل للطي والإمالة وتعديل الارتفاع" }
+      ]
+    },
+    {
+      "id": "quasar",
+      "name": { "en": "Quasar", "ar": "كوازار" },
+      "image": "https://i.imgur.com/ihDw5dJ.png",
+      "otherImages": ["https://i.imgur.com/5oedllg.png", "https://i.imgur.com/Lqgtlkk.png", "https://i.imgur.com/Sw9Qmdl.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "Rigid frame wheelchair with adjustable features for a custom fit.", "ar": "كرسي متحرك بإطار صلب مع ميزات قابلة للتعديل لمقاس مخصص." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Titanium rigid frame", "ar": "إطار صلب من التيتانيوم" },
+        { "en": "Frame weight: 4,4 kg without rear wheels (QUASAR FIX)", "ar": "وزن الإطار: 4.4 كجم بدون العجلات الخلفية (QUASAR FIX)" },
+        { "en": "Aluminium clothes guards with carbon fibre wings", "ar": "واقيات ملابس من الألومنيوم مع أجنحة من ألياف الكربون" },
+        { "en": "New 24-spoke Ultralight wheels", "ar": "عجلات خفيفة جديدة بـ 24 شعاعًا" }
+      ]
+    },
+    {
+      "id": "alhena",
+      "name": { "en": "Alhena", "ar": "آلهينا" },
+      "image": "https://i.imgur.com/k37h5A7.png",
+      "otherImages": ["https://i.imgur.com/CnlbgNy.png", "https://i.imgur.com/I9OiljW.png", "https://i.imgur.com/O64tkhv.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "Titanium folding frame wheelchair with a double cross bar.", "ar": "كرسي متحرك بإطار قابل للطي من التيتانيوم مع قضيب مزدوج." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Titanium folding frame", "ar": "إطار قابل للطي من التيتانيوم" },
+        { "en": "Double cross bar", "ar": "قضيب مزدوج" },
+        { "en": "Self closing foot-rest", "ar": "مسند قدم ذاتي الإغلاق" },
+        { "en": "Carbon fibre clothes guards", "ar": "واقيات ملابس من ألياف الكربون" }
+      ]
+    },
+    {
+      "id": "diva",
+      "name": { "en": "Diva", "ar": "ديفا" },
+      "image": "https://i.imgur.com/P9HuZXW.png",
+      "otherImages": ["https://i.imgur.com/zjr1OrY.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "Folding frame in aluminum with a wide choice of configurations.", "ar": "إطار قابل للطي من الألومنيوم مع مجموعة واسعة من التكوينات." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Folding frame in aluminium", "ar": "إطار قابل للطي من الألومنيوم" },
+        { "en": "Carbon fibre side guards (optional)", "ar": "واقيات جانبية من ألياف الكربون (اختياري)" },
+        { "en": "Tilt adjustable back-rest", "ar": "مسند ظهر قابل للتعديل بالإمالة" },
+        { "en": "Wide choice of configurations and frame colours", "ar": "مجموعة واسعة من التكوينات وألوان الإطارات" }
+      ]
+    },
+    {
+      "id": "eos3",
+      "name": { "en": "EOS3", "ar": "إيوس 3" },
+      "image": "https://i.imgur.com/RmX7G5.png",
+      "otherImages": ["https://i.imgur.com/ByLhQPD.png", "https://i.imgur.com/JdDGjJd.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "Elegant, compact, and ultralight, perfect for travel.", "ar": "أنيق ومدمج وخفيف الوزن للغاية، مثالي للسفر." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Elegant and compact, ultralight, perfect to travel", "ar": "أنيق ومدمج وخفيف الوزن، مثالي للسفر" },
+        { "en": "Titanium single foot-rest", "ar": "مسند قدم فردي من التيتانيوم" },
+        { "en": "Suitable for an overhead locker of a medium length standard flight", "ar": "مناسب للخزانة العلوية في رحلة طيران قياسية متوسطة الطول" },
+        { "en": "The special design reduces the global volume of the wheelchair", "ar": "يقلل التصميم الخاص من الحجم الكلي للكرسي المتحرك" }
+      ]
+    },
+    {
+      "id": "althea",
+      "name": { "en": "ALTHEA", "ar": "آلثيا" },
+      "image": "https://i.imgur.com/q1LYM10.png",
+      "otherImages": ["https://i.imgur.com/bK2zo0J.png", "https://i.imgur.com/GFhLQL1.png", "https://i.imgur.com/jEgzHYm.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
+      "shortDescription": { "en": "Orthopaedic light wheelchair with a foldable frame in aluminium.", "ar": "كرسي متحرك طبي خفيف الوزن بإطار قابل للطي من الألومنيوم." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Foldable frame in aluminium with double crossbar", "ar": "إطار قابل للطي من الألومنيوم مع قضيب مزدوج" },
+        { "en": "Ultra resistant and versatile", "ar": "مقاوم للغاية ومتعدد الاستخدامات" },
+        { "en": "Wide adjustability range", "ar": "نطاق تعديل واسع" },
+        { "en": "The highest customization in a foldable light wheelchair", "ar": "أعلى مستوى من التخصيص في كرسي متحرك خفيف قابل للطي" }
+      ]
+    },
+    {
+      "id": "antares",
+      "name": { "en": "ANTARES", "ar": "أنتاريس" },
+      "image": "https://i.imgur.com/gryKrhT.png",
+      "otherImages": ["https://i.imgur.com/UOnqAvK.png", "https://i.imgur.com/8ZgWEPc.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
+      "shortDescription": { "en": "Rigid frame tilt-in-space wheelchair with reclining backrest.", "ar": "كرسي متحرك بإطار صلب وميزة الإمالة في الفراغ مع مسند ظهر قابل للانحناء." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "RIGID FRAME TILT IN SPACE WHEELCHAIR", "ar": "كرسي متحرك بإطار صلب وميزة الإمالة في الفراغ" },
+        { "en": "Reclining backrest with gas springs (standard)", "ar": "مسند ظهر قابل للانحناء مع نوابض غاز (قياسي)" },
+        { "en": "Foldable backrest and rear wheels", "ar": "مسند ظهر وعجلات خلفية قابلة للطي" },
+        { "en": "Quick-release axles to take up less space", "ar": "محاور سريعة الفك لتوفير المساحة" }
+      ]
+    },
+    {
+      "id": "children-3000",
+      "name": { "en": "CHILDREN 3000", "ar": "للأطفال 3000" },
+      "image": "https://i.imgur.com/osuJGfO.png",
+      "otherImages": ["https://i.imgur.com/ejqloMy.png", "https://i.imgur.com/cM0jOkm.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Children wheelchair", "ar": "كرسي متحرك للأطفال" },
+      "shortDescription": { "en": "An ultralight and foldable wheelchair for kids with a 3-year warranty.", "ar": "كرسي متحرك خفيف الوزن وقابل للطي للأطفال مع ضمان 3 سنوات." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Adjustable seat depth", "ar": "عمق مقعد قابل للتعديل" },
+        { "en": "3 year frame warranty", "ar": "ضمان 3 سنوات على الإطار" },
+        { "en": "Quick-release rear wheels", "ar": "عجلات خلفية سريعة الفك" },
+        { "en": "Height adjustable pushing handles", "ar": "مقابض دفع قابلة لتعديل الارتفاع" },
+        { "en": "Aluminium folding frame", "ar": "إطار ألومنيوم قابل للطي" }
+      ]
+    },
+    {
+      "id": "quasar-kid",
+      "name": { "en": "QUASAR KID", "ar": "كوازار للأطفال" },
+      "image": "https://i.imgur.com/k6c1Wmv.png",
+      "otherImages": ["https://i.imgur.com/V250Ppu.png", "https://i.imgur.com/agX5RPB.png"],
+      "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
+      "category": { "en": "Children wheelchair", "ar": "كرسي متحرك للأطفال" },
+      "shortDescription": { "en": "A rigid titanium frame wheelchair for kids, featuring an adjustable axle position and various frame shapes.", "ar": "كرسي متحرك بإطار صلب من التيتانيوم للأطفال، يتميز بوضعية محور قابلة للتعديل وأشكال إطارات متنوعة." },
+      "countryOfOrigin": { "en": "Italy", "ar": "إيطاليا" },
+      "features": [
+        { "en": "Titanium rigid frame with adjustable wheel axle position", "ar": "إطار صلب من التيتانيوم مع وضعية محور العجلة القابلة للتعديل" },
+        { "en": "3 shapes of front frame", "ar": "3 أشكال للإطار الأمامي" },
+        { "en": "Folding down and tilt adjustable back-rest", "ar": "مسند ظهر قابل للطي والضبط بالإمالة" },
+        { "en": "Different models of pushing handles for assistant", "ar": "موديلات مختلفة من مقابض الدفع للمساعد" },
+        { "en": "3 models of foot-rest", "ar": "3 موديلات لمسند القدم" },
+        { "en": "Carbon fibre clothes guard", "ar": "واقي ملابس من ألياف الكربون" }
+      ]
+    }
+  ],
+  "services": [
+    {
+      "id": "maintenance",
+      "title": { "en": "Maintenance and Spare Parts", "ar": "الصيانة وقطع الغيار" },
+      "description": { "en": "We provide maintenance and spare parts for all types and models of wheelchairs.", "ar": "نوفر صيانة وقطع غيار لجميع أنواع وموديلات الكراسي المتحركة." },
+      "image": "https://i.imgur.com/4qY7a5E.png"
+    },
+    {
+      "id": "accessories",
+      "title": { "en": "Accessories", "ar": "الإكسسوارات والمستلزمات" },
+      "description": { "en": "A wide range of accessories and supplies for all wheelchairs.", "ar": "مجموعة واسعة من الإكسسوارات والمستلزمات الخاصة بالكراسي المتحركة." },
+      "image": "https://i.imgur.com/7bXkP3B.png"
+    },
+    {
+      "id": "customization",
+      "title": { "en": "Customization & Fitting", "ar": "التخصيص والقياس" },
+      "description": { "en": "We offer professional fitting services to ensure the wheelchair perfectly matches the user's measurements.", "ar": "نقدم خدمات قياس احترافية لضمان أن الكرسي المتحرك يناسب مقاسات المستخدم تمامًا." },
+      "image": "https://i.imgur.com/UeG8g2y.png"
+    }
+  ],
+  "faq": [
+    {
+      "question": { "en": "What areas do you serve?", "ar": "ما هي المناطق التي تخدمونها؟" },
+      "answer": { "en": "We serve the entire Kingdom of Saudi Arabia and the Middle East, with our headquarters in Riyadh.", "ar": "نحن نخدم جميع أنحاء المملكة العربية السعودية والشرق الأوسط، ومقرنا الرئيسي في الرياض." }
+    },
+    {
+      "question": { "en": "Do you offer international shipping?", "ar": "هل توفرون الشحن الدولي؟" },
+      "answer": { "en": "Yes, we provide international shipping for our products. Please contact us for more details on shipping options and costs.", "ar": "نعم، نوفر الشحن الدولي لمنتجاتنا. يرجى التواصل معنا لمزيد من التفاصيل حول خيارات الشحن والتكاليف." }
+    },
+    {
+      "question": { "en": "What is the warranty on your products?", "ar": "ما هو الضمان على منتجاتكم؟" },
+      "answer": { "en": "Most of our products come with a manufacturer's warranty. For example, the CHILDREN 3000 wheelchair has a 3-year frame warranty. Please check the specific product page or contact us for warranty details.", "ar": "تأتي معظم منتجاتنا مع ضمان من الشركة المصنعة. على سبيل المثال، كرسي الأطفال 3000 يأتي مع ضمان 3 سنوات على الإطار. يرجى مراجعة صفحة المنتج المحدد أو التواصل معنا للحصول على تفاصيل الضمان." }
+    }
+  ],
+  "partners": [
+    { "name": "King Saud University", "logo": "https://i.imgur.com/ZymfaaW.png" },
+    { "name": "Harakia", "logo": "https://i.imgur.com/ZR061ew.png" },
+    { "name": "Armed Forces Medical Services", "logo": "https://i.imgur.com/cuSOKEP.png" },
+    { "name": "Children with Disability Association", "logo": "https://i.imgur.com/TbqIRoC.png" },
+    { "name": "Ministry of National Guard", "logo": "https://i.imgur.com/OZS0mYf.png" },
+    { "name": "King Fahad Medical City", "logo": "https://i.imgur.com/PhYzu5O.png" },
+    { "name": "NUPCO", "logo": "https://i.imgur.com/2Lj5hcX.png" },
+    { "name": "Swaed Association", "logo": "https://i.imgur.com/7pkonTS.png" },
+    { "name": "Sultan Bin Abdulaziz Humanitarian City", "logo": "https://i.imgur.com/lAtJQLG.png" },
+    { "name": "Ministry of Health", "logo": "https://i.imgur.com/dOuRMy7.png" }
+  ]
+}
