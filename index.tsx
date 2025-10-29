@@ -111,12 +111,11 @@ const Header: React.FC<{
                 {navLinks.map((link) => (
                   <li key={link.page}>
                     <a
-                      href={`#${link.page}`}
+                      href={`#${link.page === 'home' ? '' : link.page}`}
                       className={currentPage === link.page ? 'active' : ''}
                       onClick={(e) => {
                         e.preventDefault();
                         setCurrentPage(link.page);
-                        window.scrollTo(0, 0);
                         setIsMenuOpen(false);
                       }}
                     >
@@ -168,11 +167,10 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                         {topNavLinks.map((link) => (
                           <li key={link.page}>
                             <a
-                              href={`#${link.page}`}
+                              href={`#${link.page === 'home' ? '' : link.page}`}
                               onClick={(e) => {
                                 e.preventDefault();
                                 setCurrentPage(link.page);
-                                window.scrollTo(0, 0);
                               }}
                             >
                               <T content={link.label} lang={lang} />
@@ -197,10 +195,10 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                 <div className="footer-col">
                     <h3><T content={translations.footerLinks} lang={lang} /></h3>
                     <ul>
-                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('about')}}><T content={translations.navAbout} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('products')}}><T content={translations.navProducts} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('services')}}><T content={translations.navServices} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('faq')}}><T content={translations.navFAQ} lang={lang} /></a></li>
+                        <li><a href="#about" onClick={(e)=>{e.preventDefault(); setCurrentPage('about')}}><T content={translations.navAbout} lang={lang} /></a></li>
+                        <li><a href="#products" onClick={(e)=>{e.preventDefault(); setCurrentPage('products')}}><T content={translations.navProducts} lang={lang} /></a></li>
+                        <li><a href="#services" onClick={(e)=>{e.preventDefault(); setCurrentPage('services')}}><T content={translations.navServices} lang={lang} /></a></li>
+                        <li><a href="#faq" onClick={(e)=>{e.preventDefault(); setCurrentPage('faq')}}><T content={translations.navFAQ} lang={lang} /></a></li>
                     </ul>
                 </div>
                 <div className="footer-col">
@@ -334,8 +332,15 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
       <section className={`about-section container ${lang === 'ar' ? 'rtl' : ''}`}>
           <h2><T content={translations.navAbout} lang={lang} /></h2>
           <div className="title-divider"></div>
-          <p className="section-subtitle"><T content={translations.aboutIntro} lang={lang} /></p>
-          <button className="cta-button-outline" onClick={() => setCurrentPage('about')}><T content={translations.learnMore} lang={lang} /></button>
+          <div className="home-about-content">
+              <div className="home-about-image">
+                  <img src="https://i.imgur.com/gTH8a5E.png" alt="About us"/>
+              </div>
+              <div className="home-about-text">
+                  <p><T content={translations.aboutP1} lang={lang} /></p>
+                  <button className="cta-button-outline" onClick={() => setCurrentPage('about')}><T content={translations.learnMore} lang={lang} /></button>
+              </div>
+          </div>
       </section>
 
       {/* Services Section */}
@@ -490,9 +495,11 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
             <div className="contact-info">
                 <h3><T content={translations.contactInfoTitle} lang={lang} /></h3>
                 <p><T content={translations.contactInfoText} lang={lang} /></p>
-                <p><i className="icon-map"></i> An Nahadhah, Riyadh, Saudi Arabia</p>
-                <p><i className="icon-phone"></i> +966 50 520 3532</p>
-                <p><i className="icon-email"></i> Customer@woe.sa</p>
+                 <div className="contact-list">
+                    <p className="contact-item"><span>An Nahadhah, Riyadh, Saudi Arabia</span><i className="icon-map"></i></p>
+                    <p className="contact-item"><span>+966 50 520 3532</span><i className="icon-phone"></i></p>
+                    <p className="contact-item"><span>Customer@woe.sa</span><i className="icon-email"></i></p>
+                </div>
                 <div className="map-placeholder">
                   <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.11195616527!2d46.79633331500076!3d24.75731698410298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2efd8a3911b333%3A0x6b4737c64998a699!2sAn%20Nahdah%2C%20Riyadh%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1684321098765!5m2!1sen!2sus" width="100%" height="250" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -505,7 +512,18 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
 // --- Main App Component ---
 function App() {
   const [lang, setLang] = useState<Language>('ar');
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+  
+  const getPageFromHash = (): Page => {
+    const hash = window.location.hash.replace(/^#/, '');
+    if (hash === '') return 'home';
+    const validPages: Page[] = ['home', 'about', 'products', 'services', 'faq', 'contact'];
+    if (validPages.includes(hash as Page)) {
+        return hash as Page;
+    }
+    return 'home'; // Default to home for any invalid hash
+  };
+
+  const [currentPage, setCurrentPage] = useState<Page>(getPageFromHash());
   const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -541,6 +559,11 @@ function App() {
     productFeatures: {en: "Features & Specifications", ar: "الميزات والمواصفات"},
     productOrigin: {en: "Country of Origin", ar: "بلد الصنع"},
     productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"}
+  };
+
+  const navigateTo = (page: Page) => {
+    // This function changes the URL hash, which in turn triggers the `hashchange` event listener.
+    window.location.hash = page === 'home' ? '' : page;
   };
 
   useEffect(() => {
@@ -580,13 +603,23 @@ function App() {
     }
   }, [loading]);
 
+  useEffect(() => {
+    // This listener handles URL hash changes (e.g., from browser back/forward buttons)
+    const handleHashChange = () => {
+      setCurrentPage(getPageFromHash());
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
 
   const renderPage = () => {
     if (!data) return null; // Or a loading spinner
 
     switch (currentPage) {
       case 'home':
-        return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
+        return <HomePage data={data} lang={lang} setCurrentPage={navigateTo} setSelectedProduct={setSelectedProduct} translations={translations} />;
       case 'about':
         return <AboutPage lang={lang} translations={translations} />;
       case 'products':
@@ -598,7 +631,7 @@ function App() {
       case 'contact':
         return <ContactPage lang={lang} translations={translations} />;
       default:
-        return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
+        return <HomePage data={data} lang={lang} setCurrentPage={navigateTo} setSelectedProduct={setSelectedProduct} translations={translations} />;
     }
   };
 
@@ -612,13 +645,13 @@ function App() {
         lang={lang}
         setLang={setLang}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        setCurrentPage={navigateTo}
         translations={translations}
       />
       <main>
           {renderPage()}
       </main>
-      <Footer lang={lang} setLang={setLang} setCurrentPage={setCurrentPage} translations={translations}/>
+      <Footer lang={lang} setLang={setLang} setCurrentPage={navigateTo} translations={translations}/>
       <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} lang={lang} translations={translations}/>
     </>
   );
