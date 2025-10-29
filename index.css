@@ -159,6 +159,12 @@ header.scrolled .logo img {
   height: 40px;
 }
 
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
 header nav ul {
   display: flex;
   gap: 30px;
@@ -225,6 +231,33 @@ header.scrolled .lang-switcher {
   border-color: var(--secondary-color);
   color: var(--white);
 }
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--white);
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+    transform-origin: center;
+}
+
+header.scrolled .menu-toggle .bar {
+    background-color: var(--primary-color);
+}
+
 
 /* --- Main Content & Pages --- */
 main {
@@ -866,21 +899,81 @@ footer h3 {
     :root {
         --header-height: 70px;
     }
-    header .container {
-        flex-wrap: wrap;
-    }
-    header nav {
-        /* Basic mobile nav - can be improved with JS */
-        order: 3;
-        width: 100%;
-        display: none; /* Hide for simplicity, needs JS for toggle */
-    }
+
     .hero-content h1 {
         font-size: 2.5rem;
     }
     .hero-content p {
         font-size: 1rem;
     }
+
+    .header-controls {
+        gap: 20px;
+    }
+
+    .menu-toggle {
+        display: flex;
+        order: 2;
+    }
+
+    .lang-switcher {
+        order: 1;
+    }
+    
+    header nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(15, 42, 71, 0.98);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.1);
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    }
+    
+    header.rtl nav {
+        right: 0;
+        left: auto;
+    }
+
+    header nav.open {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+    }
+    
+    header nav ul {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    header nav a, header.scrolled nav a {
+        color: var(--white);
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    header.menu-open .menu-toggle .bar:nth-child(1) {
+      transform: translateY(8.5px) rotate(45deg);
+    }
+    header.menu-open .menu-toggle .bar:nth-child(2) {
+      opacity: 0;
+    }
+    header.menu-open .menu-toggle .bar:nth-child(3) {
+      transform: translateY(-8.5px) rotate(-45deg);
+    }
+    header.menu-open .menu-toggle .bar {
+        background-color: var(--white);
+    }
+    
     .modal-body {
         grid-template-columns: 1fr;
     }

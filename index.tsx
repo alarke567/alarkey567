@@ -69,6 +69,7 @@ const Header: React.FC<{
   translations: any;
 }> = ({ lang, setLang, currentPage, setCurrentPage, translations }) => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,6 +78,17 @@ const Header: React.FC<{
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMenuOpen]);
 
   const navLinks: { page: Page; label: LocalizedString }[] = [
     { page: 'home', label: translations.navHome },
@@ -88,36 +100,49 @@ const Header: React.FC<{
   ];
 
   return (
-    <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''}`}>
+    <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
-        <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }} className="logo">
+        <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsMenuOpen(false); }} className="logo">
           <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
         </a>
-        <nav>
-          <ul>
-            {navLinks.map((link) => (
-              <li key={link.page}>
-                <a
-                  href={`#${link.page}`}
-                  className={currentPage === link.page ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setCurrentPage(link.page);
-                    window.scrollTo(0, 0);
-                  }}
-                >
-                  <T content={link.label} lang={lang} />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <button
-          className="lang-switcher"
-          onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
-        >
-          {lang === 'en' ? 'العربية' : 'English'}
-        </button>
+        <div className="header-controls">
+            <nav className={isMenuOpen ? 'open' : ''}>
+              <ul>
+                {navLinks.map((link) => (
+                  <li key={link.page}>
+                    <a
+                      href={`#${link.page}`}
+                      className={currentPage === link.page ? 'active' : ''}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(link.page);
+                        window.scrollTo(0, 0);
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <T content={link.label} lang={lang} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <button
+              className="lang-switcher"
+              onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+            >
+              {lang === 'en' ? 'العربية' : 'English'}
+            </button>
+            <button 
+              className="menu-toggle" 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+            >
+              <span className="bar"></span>
+              <span className="bar"></span>
+              <span className="bar"></span>
+            </button>
+        </div>
       </div>
     </header>
   );
