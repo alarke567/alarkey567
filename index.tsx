@@ -123,41 +123,82 @@ const Header: React.FC<{
   );
 };
 
-const Footer: React.FC<{ lang: Language, setCurrentPage: (page: Page) => void, translations: any }> = ({ lang, setCurrentPage, translations }) => {
+const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setCurrentPage: (page: Page) => void, translations: any }> = ({ lang, setLang, setCurrentPage, translations }) => {
+    
+  const topNavLinks: { page: Page; label: LocalizedString }[] = [
+    { page: 'home', label: translations.navHome },
+    { page: 'about', label: translations.navAbout },
+    { page: 'products', label: translations.navProducts },
+    { page: 'services', label: translations.navServices },
+    { page: 'faq', label: translations.navFAQ },
+    { page: 'contact', label: translations.navContact },
+  ];
+
   return (
     <footer className={lang === 'ar' ? 'rtl' : ''}>
         <div className="container">
-            <div className="footer-col">
-                <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" className="footer-logo"/>
-                <p><T content={translations.footerSlogan} lang={lang} /></p>
+            <div className="footer-top">
+                 <nav className="footer-nav">
+                    <ul>
+                        {topNavLinks.map((link) => (
+                          <li key={link.page}>
+                            <a
+                              href={`#${link.page}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setCurrentPage(link.page);
+                                window.scrollTo(0, 0);
+                              }}
+                            >
+                              <T content={link.label} lang={lang} />
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                </nav>
+                <button
+                  className="lang-switcher"
+                  onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                >
+                  {lang === 'en' ? 'العربية' : 'English'}
+                </button>
             </div>
-            <div className="footer-col">
-                <h3><T content={translations.footerLinks} lang={lang} /></h3>
-                <ul>
-                    <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('about')}}><T content={translations.navAbout} lang={lang} /></a></li>
-                    <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('products')}}><T content={translations.navProducts} lang={lang} /></a></li>
-                    <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('services')}}><T content={translations.navServices} lang={lang} /></a></li>
-                    <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('faq')}}><T content={translations.navFAQ} lang={lang} /></a></li>
-                </ul>
-            </div>
-            <div className="footer-col">
-                <h3><T content={translations.navContact} lang={lang} /></h3>
-                <p><i className="icon-map"></i> An Nahadhah, Riyadh, Saudi Arabia</p>
-                <p><i className="icon-phone"></i> +966 50 520 3532</p>
-                <p><i className="icon-email"></i> Customer@woe.sa</p>
-            </div>
-             <div className="footer-col">
-                <h3><T content={translations.footerSocial} lang={lang} /></h3>
-                <div className="social-icons">
-                    <a href="#"><i className="icon-facebook"></i></a>
-                    <a href="#"><i className="icon-twitter"></i></a>
-                    <a href="mailto:Customer@woe.sa"><i className="icon-email"></i></a>
-                    <a href="#"><i className="icon-instagram"></i></a>
+            <div className="footer-main">
+                <div className="footer-col">
+                    <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" className="footer-logo"/>
+                    <img src="https://i.imgur.com/L8aVvB4.png" alt="Wheel of Excellence Partner Logo" className="footer-logo"/>
+                    <p><T content={translations.footerSlogan} lang={lang} /></p>
+                </div>
+                <div className="footer-col">
+                    <h3><T content={translations.footerLinks} lang={lang} /></h3>
+                    <ul>
+                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('about')}}><T content={translations.navAbout} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('products')}}><T content={translations.navProducts} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('services')}}><T content={translations.navServices} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e)=>{e.preventDefault(); setCurrentPage('faq')}}><T content={translations.navFAQ} lang={lang} /></a></li>
+                    </ul>
+                </div>
+                <div className="footer-col">
+                    <h3><T content={translations.navContact} lang={lang} /></h3>
+                    <div className="contact-list">
+                      <p className="contact-item"><span>An Nahadhah, Riyadh, Saudi Arabia</span><i className="icon-map"></i></p>
+                      <p className="contact-item"><span>+966 50 520 3532</span><i className="icon-phone"></i></p>
+                      <p className="contact-item"><span>Customer@woe.sa</span><i className="icon-email"></i></p>
+                    </div>
+                </div>
+                 <div className="footer-col">
+                    <h3><T content={translations.footerSocial} lang={lang} /></h3>
+                    <div className="social-icons">
+                        <a href="#"><i className="icon-facebook"></i></a>
+                        <a href="#"><i className="icon-twitter"></i></a>
+                        <a href="mailto:Customer@woe.sa"><i className="icon-email"></i></a>
+                        <a href="#"><i className="icon-instagram"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
         <div className="footer-bottom">
-            <p>&copy; {new Date().getFullYear()} <T content={translations.footerRights} lang={lang} /></p>
+            <p>&copy; 2025 <T content={translations.footerRights} lang={lang} /></p>
         </div>
     </footer>
   );
@@ -552,7 +593,7 @@ function App() {
       <main>
           {renderPage()}
       </main>
-      <Footer lang={lang} setCurrentPage={setCurrentPage} translations={translations}/>
+      <Footer lang={lang} setLang={setLang} setCurrentPage={setCurrentPage} translations={translations}/>
       <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} lang={lang} translations={translations}/>
     </>
   );
