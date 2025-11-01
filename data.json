@@ -171,19 +171,19 @@
       "id": "maintenance",
       "title": { "en": "Maintenance and Spare Parts", "ar": "الصيانة وقطع الغيار" },
       "description": { "en": "We provide maintenance and spare parts for all types and models of wheelchairs.", "ar": "نوفر صيانة وقطع غيار لجميع أنواع وموديلات الكراسي المتحركة." },
-      "image": "https://i.imgur.com/4qY7a5E.png"
+      "image": "https://i.imgur.com/YvBnSfe.jpeg"
     },
     {
       "id": "accessories",
       "title": { "en": "Accessories", "ar": "الإكسسوارات والمستلزمات" },
       "description": { "en": "A wide range of accessories and supplies for all wheelchairs.", "ar": "مجموعة واسعة من الإكسسوارات والمستلزمات الخاصة بالكراسي المتحركة." },
-      "image": "https://i.imgur.com/7bXkP3B.png"
+      "image": "https://i.imgur.com/mq8SBlj.jpeg"
     },
     {
       "id": "customization",
       "title": { "en": "Customization & Fitting", "ar": "التخصيص والقياس" },
       "description": { "en": "We offer professional fitting services to ensure the wheelchair perfectly matches the user's measurements.", "ar": "نقدم خدمات قياس احترافية لضمان أن الكرسي المتحرك يناسب مقاسات المستخدم تمامًا." },
-      "image": "https://i.imgur.com/UeG8g2y.png"
+      "image": "https://i.imgur.com/MUrUBBs.png"
     }
   ],
   "faq": [

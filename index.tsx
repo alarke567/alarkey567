@@ -102,12 +102,13 @@ const Header: React.FC<{
     <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
         <div className="logo-area">
-            <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsMenuOpen(false); }} className="logo">
+            <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsMenuOpen(false); }} className="logo" aria-label={translations.ariaHomepage[lang]}>
               <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
             </a>
             <button
               className="lang-switcher"
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+              aria-label={translations.ariaSwitchLang[lang]}
             >
               {lang === 'en' ? 'العربية' : 'English'}
             </button>
@@ -137,7 +138,7 @@ const Header: React.FC<{
             <button 
               className="menu-toggle" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMenuOpen ? translations.ariaCloseMenu[lang] : translations.ariaOpenMenu[lang]}
               aria-expanded={isMenuOpen}
             >
               <span className="bar"></span>
@@ -185,6 +186,7 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                 <button
                   className="lang-switcher"
                   onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                  aria-label={translations.ariaSwitchLang[lang]}
                 >
                   {lang === 'en' ? 'العربية' : 'English'}
                 </button>
@@ -215,10 +217,10 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                  <div className="footer-col">
                     <h3><T content={translations.footerSocial} lang={lang} /></h3>
                     <div className="social-icons">
-                        <a href="#"><i className="icon-facebook"></i></a>
-                        <a href="#"><i className="icon-twitter"></i></a>
-                        <a href="mailto:Customer@woe.sa"><i className="icon-email"></i></a>
-                        <a href="#"><i className="icon-instagram"></i></a>
+                        <a href="#" aria-label={translations.ariaFollowFacebook[lang]}><i className="icon-facebook"></i></a>
+                        <a href="#" aria-label={translations.ariaFollowTwitter[lang]}><i className="icon-twitter"></i></a>
+                        <a href="mailto:Customer@woe.sa" aria-label={translations.ariaSendEmail[lang]}><i className="icon-email"></i></a>
+                        <a href="#" aria-label={translations.ariaFollowInstagram[lang]}><i className="icon-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -247,7 +249,7 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
   return (
     <div className={`modal-overlay ${lang === 'ar' ? 'rtl' : ''}`} onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>&times;</button>
+        <button className="modal-close" onClick={onClose} aria-label={translations.ariaCloseModal[lang]}>&times;</button>
         <div className="modal-body">
             <div className="modal-gallery">
                  <div className="modal-main-image">
@@ -256,13 +258,17 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
                  {allImages.length > 1 && (
                      <div className="modal-thumbnails">
                          {allImages.map((img, index) => (
-                             <img
+                             <button
                                  key={index}
-                                 src={img}
-                                 alt={`Thumbnail ${index + 1}`}
-                                 className={currentImageIndex === index ? 'active' : ''}
+                                 className={`thumbnail-button ${currentImageIndex === index ? 'active' : ''}`}
                                  onClick={() => setCurrentImageIndex(index)}
-                             />
+                                 aria-label={`${translations.ariaViewImage[lang]} ${index + 1}`}
+                              >
+                               <img
+                                 src={img}
+                                 alt={`${translations.thumbnailAlt[lang]} ${index + 1}`}
+                               />
+                             </button>
                          ))}
                      </div>
                  )}
@@ -281,7 +287,7 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
                     ))}
                 </ul>
                 <p><strong><T content={translations.productOrigin} lang={lang} />:</strong> <T content={product.countryOfOrigin} lang={lang} /></p>
-                <a href="mailto:Customer@woe.sa" className="cta-button modal-cta"><T content={translations.productContact} lang={lang} /></a>
+                <a href="mailto:Customer@woe.sa" className="cta-button modal-cta" aria-label={translations.ariaContactForPrice[lang]}><T content={translations.productContact} lang={lang} /></a>
             </div>
         </div>
       </div>
@@ -314,7 +320,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
             <div className="hero-content">
               <h1><T content={slide.title} lang={lang} /></h1>
               <p><T content={slide.subtitle} lang={lang} /></p>
-              <button className="cta-button" onClick={() => setCurrentPage('products')}>
+              <button className="cta-button" onClick={() => setCurrentPage('products')} aria-label={translations.ariaExploreProducts[lang]}>
                 <T content={translations.heroButton} lang={lang} />
               </button>
             </div>
@@ -322,11 +328,13 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
         ))}
          <div className="slider-dots">
             {data.slides.map((_, index) => (
-                <span 
+                <button 
                     key={index} 
                     className={`dot ${index === currentSlide ? 'active' : ''}`}
                     onClick={() => setCurrentSlide(index)}
-                ></span>
+                    aria-label={`${translations.ariaGoToSlide[lang]} ${index + 1}`}
+                    aria-current={index === currentSlide ? "true" : "false"}
+                ></button>
             ))}
         </div>
       </section>
@@ -337,11 +345,11 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
           <div className="title-divider"></div>
           <div className="home-about-content">
               <div className="home-about-image">
-                  <img src="https://i.imgur.com/gTH8a5E.png" alt="About us"/>
+                  <img src="https://i.imgur.com/sUARy23.png" alt="About us"/>
               </div>
               <div className="home-about-text">
                   <p><T content={translations.aboutP1} lang={lang} /></p>
-                  <button className="cta-button-outline" onClick={() => setCurrentPage('about')}><T content={translations.learnMore} lang={lang} /></button>
+                  <button className="cta-button-outline" onClick={() => setCurrentPage('about')} aria-label={translations.ariaLearnMore[lang]}><T content={translations.learnMore} lang={lang} /></button>
               </div>
           </div>
       </section>
@@ -375,11 +383,11 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
                       </div>
                       <h3><T content={product.name} lang={lang}/></h3>
                       <p><T content={product.shortDescription} lang={lang}/></p>
-                      <button className="cta-button-outline" onClick={() => setSelectedProduct(product)}><T content={translations.viewDetails} lang={lang} /></button>
+                      <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
                   </div>
               ))}
           </div>
-          <button className="cta-button" onClick={() => setCurrentPage('products')}><T content={translations.viewAllProducts} lang={lang} /></button>
+          <button className="cta-button" onClick={() => setCurrentPage('products')} aria-label={translations.ariaViewAllProducts[lang]}><T content={translations.viewAllProducts} lang={lang} /></button>
       </section>
 
       {/* Partners of Success Section */}
@@ -412,7 +420,7 @@ const AboutPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tran
                 <p><T content={translations.aboutP2} lang={lang} /></p>
             </div>
             <div className="about-image">
-                <img src="https://i.imgur.com/gTH8a5E.png" alt="About us image"/>
+                <img src="https://i.imgur.com/sUARy23.png" alt="About us image"/>
             </div>
         </div>
     </div>
@@ -430,7 +438,7 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
                     </div>
                     <h3><T content={product.name} lang={lang}/></h3>
                     <p><T content={product.shortDescription} lang={lang}/></p>
-                    <button className="cta-button-outline" onClick={() => setSelectedProduct(product)}><T content={translations.viewDetails} lang={lang} /></button>
+                    <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
                 </div>
             ))}
         </div>
@@ -467,11 +475,20 @@ const FAQPage: React.FC<{ data: AppData; lang: Language, translations: any }> = 
             <div className="faq-list">
                 {data.faq.map((item, index) => (
                     <div key={index} className="faq-item">
-                        <div className="faq-question" onClick={() => toggleFAQ(index)}>
+                        <button 
+                            className="faq-question" 
+                            onClick={() => toggleFAQ(index)}
+                            aria-expanded={openIndex === index}
+                            aria-controls={`faq-answer-${index}`}
+                        >
                             <span><T content={item.question} lang={lang} /></span>
-                            <span className={`faq-icon ${openIndex === index ? 'open' : ''}`}>+</span>
-                        </div>
-                        <div className={`faq-answer ${openIndex === index ? 'open' : ''}`}>
+                            <span className={`faq-icon ${openIndex === index ? 'open' : ''}`} aria-hidden="true">+</span>
+                        </button>
+                        <div 
+                            id={`faq-answer-${index}`}
+                            role="region"
+                            className={`faq-answer ${openIndex === index ? 'open' : ''}`}
+                        >
                             <p><T content={item.answer} lang={lang} /></p>
                         </div>
                     </div>
@@ -492,7 +509,7 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
                     <input type="text" placeholder={translations.formName[lang]} />
                     <input type="email" placeholder={translations.formEmail[lang]} />
                     <textarea rows={5} placeholder={translations.formMessage[lang]}></textarea>
-                    <button type="submit" className="cta-button"><T content={translations.formSend} lang={lang} /></button>
+                    <button type="submit" className="cta-button" aria-label={translations.ariaSendMessage[lang]}><T content={translations.formSend} lang={lang} /></button>
                 </form>
             </div>
             <div className="contact-info">
@@ -504,7 +521,7 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
                     <p className="contact-item"><span>Customer@woe.sa</span><i className="icon-email"></i></p>
                 </div>
                 <div className="map-placeholder">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.11195616527!2d46.79633331500076!3d24.75731698410298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2efd8a3911b333%3A0x6b4737c64998a699!2sAn%20Nahdah%2C%20Riyadh%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1684321098765!5m2!1sen!2sus" width="100%" height="250" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3623.11195616527!2d46.79633331500076!3d24.75731698410298!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2efd8a3911b333%3A0x6b4737c64998a699!2sAn%20Nahdah%2C%20Riyadh%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1684321098765!5m2!1sen!2sus" width="100%" height="250" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Location Map"></iframe>
                 </div>
             </div>
         </div>
@@ -520,10 +537,7 @@ function App() {
     const hash = window.location.hash.replace(/^#/, '');
     if (hash === '') return 'home';
     const validPages: Page[] = ['home', 'about', 'products', 'services', 'faq', 'contact'];
-    if (validPages.includes(hash as Page)) {
-        return hash as Page;
-    }
-    return 'home'; // Default to home for any invalid hash
+    return validPages.includes(hash as Page) ? (hash as Page) : 'home';
   };
 
   const [currentPage, setCurrentPage] = useState<Page>(getPageFromHash());
@@ -561,18 +575,53 @@ function App() {
     formSend: { en: 'Send Message', ar: 'إرسال الرسالة' },
     productFeatures: {en: "Features & Specifications", ar: "الميزات والمواصفات"},
     productOrigin: {en: "Country of Origin", ar: "بلد الصنع"},
-    productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"}
-  };
-
-  const navigateTo = (page: Page) => {
-    // This function changes the URL hash, which in turn triggers the `hashchange` event listener.
-    window.location.hash = page === 'home' ? '' : page;
+    productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"},
+    thumbnailAlt: { en: "Thumbnail", ar: "صورة مصغرة" },
+    // ARIA Labels
+    ariaHomepage: { en: 'Homepage', ar: 'الصفحة الرئيسية' },
+    ariaSwitchLang: { en: 'Switch language to Arabic', ar: 'التبديل إلى اللغة الإنجليزية' },
+    ariaOpenMenu: { en: 'Open navigation menu', ar: 'فتح قائمة التنقل' },
+    ariaCloseMenu: { en: 'Close navigation menu', ar: 'إغلاق قائمة التنقل' },
+    ariaFollowFacebook: { en: 'Follow us on Facebook', ar: 'تابعنا على فيسبوك' },
+    ariaFollowTwitter: { en: 'Follow us on Twitter', ar: 'تابعنا على تويتر' },
+    ariaSendEmail: { en: 'Send us an email', ar: 'أرسل لنا بريدًا إلكترونيًا' },
+    ariaFollowInstagram: { en: 'Follow us on Instagram', ar: 'تابعنا على انستغرام' },
+    ariaExploreProducts: { en: 'Explore our range of products', ar: 'استكشف مجموعة منتجاتنا' },
+    ariaGoToSlide: { en: 'Go to slide', ar: 'اذهب إلى الشريحة' },
+    ariaLearnMore: { en: 'Learn more about Wheel of Excellence', ar: 'اعرف المزيد عن عجلة التميز' },
+    ariaViewDetails: { en: 'View details for', ar: 'عرض تفاصيل' },
+    ariaViewAllProducts: { en: 'View all available products', ar: 'عرض جميع المنتجات المتاحة' },
+    ariaSendMessage: { en: 'Send your message to us', ar: 'أرسل رسالتك لنا' },
+    ariaCloseModal: { en: 'Close product details modal', ar: 'إغلاق نافذة تفاصيل المنتج' },
+    ariaViewImage: { en: 'View image', ar: 'عرض الصورة' },
+    ariaContactForPrice: { en: 'Contact us for price information', ar: 'تواصل معنا لمعرفة السعر' },
   };
 
   useEffect(() => {
     document.documentElement.lang = lang;
     document.body.className = lang === 'ar' ? 'rtl' : 'ltr';
   }, [lang]);
+
+  useEffect(() => {
+    // Effect to sync state TO url hash
+    const hash = window.location.hash.replace(/^#/, '');
+    const pageId = currentPage === 'home' ? '' : currentPage;
+    if (hash !== pageId) {
+      window.location.hash = pageId;
+    }
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  useEffect(() => {
+    // Effect to sync url hash change TO state (for back/forward buttons)
+    const handleHashChange = () => {
+      setCurrentPage(getPageFromHash());
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []); // This effect runs only once to set up the listener
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -606,23 +655,12 @@ function App() {
     }
   }, [loading]);
 
-  useEffect(() => {
-    // This listener handles URL hash changes (e.g., from browser back/forward buttons)
-    const handleHashChange = () => {
-      setCurrentPage(getPageFromHash());
-      window.scrollTo(0, 0);
-    };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-
   const renderPage = () => {
     if (!data) return null; // Or a loading spinner
 
     switch (currentPage) {
       case 'home':
-        return <HomePage data={data} lang={lang} setCurrentPage={navigateTo} setSelectedProduct={setSelectedProduct} translations={translations} />;
+        return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
       case 'about':
         return <AboutPage lang={lang} translations={translations} />;
       case 'products':
@@ -634,7 +672,7 @@ function App() {
       case 'contact':
         return <ContactPage lang={lang} translations={translations} />;
       default:
-        return <HomePage data={data} lang={lang} setCurrentPage={navigateTo} setSelectedProduct={setSelectedProduct} translations={translations} />;
+        return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
     }
   };
 
@@ -648,13 +686,13 @@ function App() {
         lang={lang}
         setLang={setLang}
         currentPage={currentPage}
-        setCurrentPage={navigateTo}
+        setCurrentPage={setCurrentPage}
         translations={translations}
       />
       <main>
           {renderPage()}
       </main>
-      <Footer lang={lang} setLang={setLang} setCurrentPage={navigateTo} translations={translations}/>
+      <Footer lang={lang} setLang={setLang} setCurrentPage={setCurrentPage} translations={translations}/>
       <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} lang={lang} translations={translations}/>
     </>
   );
