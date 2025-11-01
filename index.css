@@ -159,10 +159,24 @@ header.scrolled .logo img {
   height: 40px;
 }
 
-.header-controls {
+.logo-area, .header-right {
+    flex: 1;
+}
+
+.logo-area {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.header-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+header nav {
+    flex-shrink: 0;
 }
 
 header nav ul {
@@ -952,19 +966,10 @@ footer h3 {
     .hero-content p {
         font-size: 1rem;
     }
-
-    .header-controls {
-        gap: 20px;
-    }
-
+    
     .menu-toggle {
         display: flex;
-        order: 2;
         z-index: 1011;
-    }
-
-    .lang-switcher {
-        order: 1;
     }
     
     header nav {

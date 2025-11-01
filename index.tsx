@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -102,35 +101,39 @@ const Header: React.FC<{
   return (
     <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
-        <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsMenuOpen(false); }} className="logo">
-          <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
-        </a>
-        <div className="header-controls">
-            <nav className={isMenuOpen ? 'open' : ''}>
-              <ul>
-                {navLinks.map((link) => (
-                  <li key={link.page}>
-                    <a
-                      href={`#${link.page === 'home' ? '' : link.page}`}
-                      className={currentPage === link.page ? 'active' : ''}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(link.page);
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      <T content={link.label} lang={lang} />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+        <div className="logo-area">
+            <a href="#" onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsMenuOpen(false); }} className="logo">
+              <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
+            </a>
             <button
               className="lang-switcher"
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
             >
               {lang === 'en' ? 'العربية' : 'English'}
             </button>
+        </div>
+
+        <nav className={isMenuOpen ? 'open' : ''}>
+          <ul>
+            {navLinks.map((link) => (
+              <li key={link.page}>
+                <a
+                  href={`#${link.page === 'home' ? '' : link.page}`}
+                  className={currentPage === link.page ? 'active' : ''}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(link.page);
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <T content={link.label} lang={lang} />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="header-right">
             <button 
               className="menu-toggle" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
