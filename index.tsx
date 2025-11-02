@@ -20,6 +20,8 @@ interface Product {
   otherImages?: string[];
   manufacturer: LocalizedString;
   category: LocalizedString;
+  mainCategory?: string;
+  isFeatured?: boolean;
   shortDescription: LocalizedString;
   countryOfOrigin: LocalizedString;
   features: LocalizedString[];
@@ -65,8 +67,9 @@ const Header: React.FC<{
   setLang: (lang: Language) => void;
   currentPage: Page;
   setCurrentPage: (page: Page) => void;
+  setInitialProductFilter: (filter: string) => void;
   translations: any;
-}> = ({ lang, setLang, currentPage, setCurrentPage, translations }) => {
+}> = ({ lang, setLang, currentPage, setCurrentPage, setInitialProductFilter, translations }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -98,6 +101,16 @@ const Header: React.FC<{
     { page: 'contact', label: translations.navContact },
   ];
 
+  const productCategories: { key: string; translationKey: keyof typeof translations }[] = [
+      { key: 'sport-lightweight', translationKey: 'categorySportLightweight' },
+      { key: 'lightweight', translationKey: 'categoryLightweight' },
+      { key: 'electric', translationKey: 'categoryElectric' },
+      { key: 'children', translationKey: 'categoryChildren' },
+      { key: 'standard', translationKey: 'categoryStandard' },
+      { key: 'bathroom', translationKey: 'categoryBathroom' },
+      { key: 'accessories', translationKey: 'categoryAccessories' },
+  ];
+
   return (
     <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
@@ -117,18 +130,38 @@ const Header: React.FC<{
         <nav className={isMenuOpen ? 'open' : ''}>
           <ul>
             {navLinks.map((link) => (
-              <li key={link.page}>
+              <li key={link.page} className={link.page === 'products' ? 'has-dropdown' : ''}>
                 <a
                   href={`#${link.page === 'home' ? '' : link.page}`}
                   className={currentPage === link.page ? 'active' : ''}
                   onClick={(e) => {
                     e.preventDefault();
                     setCurrentPage(link.page);
+                    if (link.page === 'products') {
+                        setInitialProductFilter('featured');
+                    }
                     setIsMenuOpen(false);
                   }}
                 >
                   <T content={link.label} lang={lang} />
+                  {link.page === 'products' && <span className="chevron"></span>}
                 </a>
+                {link.page === 'products' && (
+                  <ul className="dropdown-menu">
+                    {productCategories.map(category => (
+                        <li key={category.key}>
+                            <a href="#products" onClick={(e) => {
+                                e.preventDefault();
+                                setCurrentPage('products');
+                                setInitialProductFilter(category.key);
+                                setIsMenuOpen(false);
+                            }}>
+                                <T content={translations[category.translationKey]} lang={lang} />
+                            </a>
+                        </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -376,7 +409,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
           <h2><T content={translations.navProducts} lang={lang} /></h2>
           <div className="title-divider"></div>
           <div className="product-grid">
-              {data.products.slice(0, 3).map(product => (
+              {data.products.filter(p => p.isFeatured).slice(0, 3).map(product => (
                   <div key={product.id} className="product-card">
                       <div className="product-card-image">
                         <img src={product.image} alt={product.name[lang]} />
@@ -426,12 +459,44 @@ const AboutPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tran
     </div>
 );
 
-const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct: (p: Product) => void, translations: any }> = ({ data, lang, setSelectedProduct, translations }) => (
-    <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
-        <h1 className="page-title"><T content={translations.navProducts} lang={lang} /></h1>
-        <div className="title-divider"></div>
+const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct: (p: Product) => void, translations: any, initialFilter: string }> = ({ data, lang, setSelectedProduct, translations, initialFilter }) => {
+    
+    const [activeFilter, setActiveFilter] = useState(initialFilter);
+
+    useEffect(() => {
+        setActiveFilter(initialFilter);
+    }, [initialFilter]);
+
+    const categoryOrder: { key: string; translationKey: keyof typeof translations }[] = [
+        { key: 'sport-lightweight', translationKey: 'categorySportLightweight' },
+        { key: 'lightweight', translationKey: 'categoryLightweight' },
+        { key: 'electric', translationKey: 'categoryElectric' },
+        { key: 'children', translationKey: 'categoryChildren' },
+        { key: 'standard', translationKey: 'categoryStandard' },
+        { key: 'bathroom', translationKey: 'categoryBathroom' },
+        { key: 'accessories', translationKey: 'categoryAccessories' },
+    ];
+    
+    const filterButtons = [
+        { key: 'featured', translationKey: 'filterFeatured' },
+        { key: 'all', translationKey: 'filterAll' },
+        ...categoryOrder
+    ];
+
+    const productsByCategory = data.products.reduce((acc, product) => {
+        const category = product.mainCategory || 'standard'; // Fallback category
+        if (!acc[category]) {
+            acc[category] = [];
+        }
+        acc[category].push(product);
+        return acc;
+    }, {} as Record<string, Product[]>);
+
+    const featuredProducts = data.products.filter(p => p.isFeatured);
+
+    const renderProductGrid = (products: Product[]) => (
         <div className="product-grid">
-            {data.products.map(product => (
+            {products.map(product => (
                 <div key={product.id} className="product-card">
                     <div className="product-card-image">
                       <img src={product.image} alt={product.name[lang]} />
@@ -442,8 +507,62 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
                 </div>
             ))}
         </div>
-    </div>
-);
+    );
+
+    return (
+        <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
+            <h1 className="page-title"><T content={translations.navProducts} lang={lang} /></h1>
+            <div className="title-divider"></div>
+
+            <div className="product-filter-bar">
+                {filterButtons.map(({ key, translationKey }) => (
+                    <button
+                        key={key}
+                        className={activeFilter === key ? 'active' : ''}
+                        onClick={() => setActiveFilter(key)}
+                    >
+                        <T content={translations[translationKey]} lang={lang} />
+                    </button>
+                ))}
+            </div>
+
+            {activeFilter === 'featured' && (
+                 <section className="product-category-section">
+                    <h2 className="product-category-title">
+                        <T content={translations.filterFeatured} lang={lang} />
+                    </h2>
+                    {renderProductGrid(featuredProducts)}
+                </section>
+            )}
+
+            {activeFilter === 'all' && (
+                <>
+                    {categoryOrder.map(({ key, translationKey }) => {
+                        const categoryProducts = productsByCategory[key];
+                        if (!categoryProducts || categoryProducts.length === 0) return null;
+                        return (
+                            <section key={key} className="product-category-section">
+                                <h2 className="product-category-title">
+                                    <T content={translations[translationKey]} lang={lang} />
+                                </h2>
+                                {renderProductGrid(categoryProducts)}
+                            </section>
+                        );
+                    })}
+                </>
+            )}
+
+            {activeFilter !== 'all' && activeFilter !== 'featured' && (
+                 <section className="product-category-section">
+                    <h2 className="product-category-title">
+                        <T content={translations[categoryOrder.find(c => c.key === activeFilter)?.translationKey || '']} lang={lang} />
+                    </h2>
+                    {renderProductGrid(productsByCategory[activeFilter] || [])}
+                </section>
+            )}
+        </div>
+    );
+};
 
 const ServicesPage: React.FC<{ data: AppData; lang: Language, translations: any }> = ({ data, lang, translations }) => (
     <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
@@ -544,6 +663,7 @@ function App() {
   const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [initialProductFilter, setInitialProductFilter] = useState<string>('featured');
   
   const translations = {
     navHome: { en: 'Home', ar: 'الرئيسية' },
@@ -559,7 +679,7 @@ function App() {
     viewAllProducts: { en: 'View All Products', ar: 'عرض كل المنتجات' },
     partnersTitle: { en: 'Partners of Success', ar: 'شركاء النجاح' },
     footerSlogan: { en: 'Leading mobility solutions for a better quality of life.', ar: 'حلول تنقل رائدة لجودة حياة أفضل.' },
-    footerLinks: { en: 'Quick Links', ar: 'روابط سريعة' },
+    footerLinks: { en: 'Quick Links', ar: 'روابط سترة' },
     footerSocial: { en: 'Follow Us', ar: 'تابعنا' },
     footerRights: { en: 'Wheel of Excellence. All Rights Reserved.', ar: 'مؤسسة عجلة التميز. كل الحقوق محفوظة.' },
     whoWeAre: { en: 'Who We Are', ar: 'من نحن' },
@@ -577,6 +697,17 @@ function App() {
     productOrigin: {en: "Country of Origin", ar: "بلد الصنع"},
     productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"},
     thumbnailAlt: { en: "Thumbnail", ar: "صورة مصغرة" },
+    // Filter Titles
+    filterFeatured: { en: 'Featured', ar: 'المميزة' },
+    filterAll: { en: 'All', ar: 'الكل' },
+    // Category Titles
+    categorySportLightweight: { en: "Ultralight Wheelchairs", ar: "الكراسي خفيفة الوزن جداً" },
+    categoryLightweight: { en: "Lightweight Wheelchairs", ar: "الكراسي خفيفة الوزن" },
+    categoryElectric: { en: "Electric Wheelchairs", ar: "الكراسي الكهربائية" },
+    categoryChildren: { en: "Children's Wheelchairs", ar: "كراسي الاطفال" },
+    categoryStandard: { en: "Standard Wheelchairs", ar: "الكراسي العادية" },
+    categoryBathroom: { en: "Bathroom Chairs", ar: "كراسي الحمام" },
+    categoryAccessories: { en: "Accessories", ar: "الإكسسوارات" },
     // ARIA Labels
     ariaHomepage: { en: 'Homepage', ar: 'الصفحة الرئيسية' },
     ariaSwitchLang: { en: 'Switch language to Arabic', ar: 'التبديل إلى اللغة الإنجليزية' },
@@ -664,7 +795,7 @@ function App() {
       case 'about':
         return <AboutPage lang={lang} translations={translations} />;
       case 'products':
-        return <ProductsPage data={data} lang={lang} setSelectedProduct={setSelectedProduct} translations={translations} />;
+        return <ProductsPage data={data} lang={lang} setSelectedProduct={setSelectedProduct} translations={translations} initialFilter={initialProductFilter} />;
       case 'services':
         return <ServicesPage data={data} lang={lang} translations={translations}/>;
       case 'faq':
@@ -687,6 +818,7 @@ function App() {
         setLang={setLang}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        setInitialProductFilter={setInitialProductFilter}
         translations={translations}
       />
       <main>

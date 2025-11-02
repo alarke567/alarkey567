@@ -20,9 +20,11 @@
   "products": [
     {
       "id": "eos",
-      "name": { "en": "EOS", "ar": "إيوس" },
+      "mainCategory": "sport-lightweight",
+      "isFeatured": true,
+      "name": { "en": "EOS", "ar": "EOS" },
       "image": "https://i.imgur.com/t37N5oN.png",
-      "otherImages": ["https://i.imgur.com/p4gxxPo.png", "https://i.imgur.com/MkQMqpR.png", "https://i.imgur.com/wAL4HVq.png"],
+      "otherImages": ["https://i.imgur.com/p4gxxPo.png", "https://i.imgur.com/MkQMqpR.png", "https://i.imgur.com/wAL4HVg.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
       "shortDescription": { "en": "A rigid titanium frame wheelchair, combining lightness and strength.", "ar": "كرسي متحرك بإطار صلب من التيتانيوم، يجمع بين الخفة والقوة." },
@@ -36,9 +38,10 @@
     },
     {
       "id": "quasar",
-      "name": { "en": "Quasar", "ar": "كوازار" },
-      "image": "https://i.imgur.com/ihDw5dJ.png",
-      "otherImages": ["https://i.imgur.com/5oedllg.png", "https://i.imgur.com/Lqgtlkk.png", "https://i.imgur.com/Sw9Qmdl.png"],
+      "mainCategory": "sport-lightweight",
+      "name": { "en": "Quasar", "ar": "Quasar" },
+      "image": "https://i.imgur.com/ihDw5dJ.jpeg",
+      "otherImages": ["https://i.imgur.com/5oedlIg.jpeg", "https://i.imgur.com/LqgtIkk.jpeg", "https://i.imgur.com/Sw9QmdI.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
       "shortDescription": { "en": "Rigid frame wheelchair with adjustable features for a custom fit.", "ar": "كرسي متحرك بإطار صلب مع ميزات قابلة للتعديل لمقاس مخصص." },
@@ -52,9 +55,10 @@
     },
     {
       "id": "alhena",
-      "name": { "en": "Alhena", "ar": "آلهينا" },
-      "image": "https://i.imgur.com/k37h5A7.png",
-      "otherImages": ["https://i.imgur.com/CnlbgNy.png", "https://i.imgur.com/I9OiljW.png", "https://i.imgur.com/O64tkhv.png"],
+      "mainCategory": "sport-lightweight",
+      "name": { "en": "Alhena", "ar": "Alhena" },
+      "image": "https://i.imgur.com/k37h5A7.jpeg",
+      "otherImages": ["https://i.imgur.com/CnlbgNy.jpeg", "https://i.imgur.com/I9OiIjW.jpeg", "https://i.imgur.com/O64tkhv.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
       "shortDescription": { "en": "Titanium folding frame wheelchair with a double cross bar.", "ar": "كرسي متحرك بإطار قابل للطي من التيتانيوم مع قضيب مزدوج." },
@@ -68,9 +72,10 @@
     },
     {
       "id": "diva",
-      "name": { "en": "Diva", "ar": "ديفا" },
-      "image": "https://i.imgur.com/P9HuZXW.png",
-      "otherImages": ["https://i.imgur.com/zjr1OrY.png"],
+      "mainCategory": "sport-lightweight",
+      "name": { "en": "Diva", "ar": "Diva" },
+      "image": "https://i.imgur.com/P9HuZXW.jpeg",
+      "otherImages": ["https://i.imgur.com/zjr1OrY.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
       "shortDescription": { "en": "Folding frame in aluminum with a wide choice of configurations.", "ar": "إطار قابل للطي من الألومنيوم مع مجموعة واسعة من التكوينات." },
@@ -84,9 +89,10 @@
     },
     {
       "id": "eos3",
-      "name": { "en": "EOS3", "ar": "إيوس 3" },
-      "image": "https://i.imgur.com/2s2s3vN.png",
-      "otherImages": ["https://i.imgur.com/fJ32ySR.png", "https://i.imgur.com/9qL9s1B.png"],
+      "mainCategory": "sport-lightweight",
+      "name": { "en": "EOS3", "ar": "EOS3" },
+      "image": "https://i.imgur.com/RmX7G5i.jpeg",
+      "otherImages": ["https://i.imgur.com/ByLhQPD.jpeg", "https://i.imgur.com/JdDGjJd.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
       "shortDescription": { "en": "Elegant, compact, and ultralight, perfect for travel.", "ar": "أنيق ومدمج وخفيف الوزن للغاية، مثالي للسفر." },
@@ -99,10 +105,72 @@
       ]
     },
     {
+      "id": "kuschall-champion",
+      "mainCategory": "sport-lightweight",
+      "isFeatured": false,
+      "name": { "en": "Küschall Champion", "ar": "Champion" },
+      "image": "https://i.imgur.com/scsG6rT.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/Po1vNWH.jpeg"
+      ],
+      "manufacturer": { "en": "Küschall", "ar": "كوشال" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "The iconic foldable rigid wheelchair with the driving performance of a rigid frame.", "ar": "كرسي متحرك صلب قابل للطي، يجمع بين أداء القيادة للإطار الصلب وسهولة الحمل." },
+      "countryOfOrigin": { "en": "Switzerland", "ar": "سويسرا" },
+      "features": [
+        { "en": "Unique folding mechanism (SK-Folding)", "ar": "آلية طي فريدة (SK-Folding)" },
+        { "en": "Hydroformed front frame for strength and style", "ar": "إطار أمامي مُشكل بالماء للقوة والأناقة" },
+        { "en": "Rigid driving performance with foldable convenience", "ar": "أداء قيادة صلب مع سهولة الطي" },
+        { "en": "Highly configurable and customizable", "ar": "قابل للتكوين والتخصيص بدرجة عالية" }
+      ]
+    },
+    {
+      "id": "kuschall-k-series",
+      "mainCategory": "sport-lightweight",
+      "isFeatured": false,
+      "name": { "en": "Küschall K-Series", "ar": "K-series" },
+      "image": "https://i.imgur.com/2oDlRSj.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/0t0GAVU.png",
+        "https://i.imgur.com/8ZQhdE5.jpeg"
+      ],
+      "manufacturer": { "en": "Küschall", "ar": "كوشال" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "An iconic, versatile, and high-performance rigid wheelchair for active users.", "ar": "كرسي متحرك صلب مميز ومتعدد الاستخدامات وعالي الأداء للمستخدمين النشطين." },
+      "countryOfOrigin": { "en": "Switzerland", "ar": "سويسرا" },
+      "features": [
+        { "en": "Hydroformed frame for ergonomic grip and easy transfers", "ar": "إطار مُشكل بالماء لقبضة مريحة ونقل سهل" },
+        { "en": "Fully adjustable to the user's needs", "ar": "قابل للتعديل بالكامل ليناسب احتياجات المستخدم" },
+        { "en": "Available in aluminum, titanium, and carbon fibre frames", "ar": "متوفر بإطارات من الألومنيوم والتيتانيوم وألياف الكربون" },
+        { "en": "Locking backrest for easy lifting and transport", "ar": "مسند ظهر قابل للقفل لسهولة الرفع والنقل" }
+      ]
+    },
+    {
+      "id": "kuschall-ksl",
+      "mainCategory": "sport-lightweight",
+      "isFeatured": false,
+      "name": { "en": " KSL", "ar": " KSL" },
+      "image": "https://i.imgur.com/7IhJjNq.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/csMI81l.png"
+      ],
+      "manufacturer": { "en": "Küschall", "ar": "كوشال" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "A super-light and fully welded wheelchair, custom-built for the most experienced users.", "ar": "كرسي متحرك خفيف للغاية وملحوم بالكامل، مصمم خصيصًا للمستخدمين الأكثر خبرة." },
+      "countryOfOrigin": { "en": "Switzerland", "ar": "سويسرا" },
+      "features": [
+        { "en": "Fully welded frame for ultimate rigidity and lightness", "ar": "إطار ملحوم بالكامل لتحقيق أقصى درجات الصلابة والخفة" },
+        { "en": "Total weight starting from 6.8 kg", "ar": "وزن إجمالي يبدأ من 6.8 كجم" },
+        { "en": "Custom-made to your exact measurements", "ar": "مصمم خصيصًا ليناسب قياساتك الدقيقة" },
+        { "en": "Minimalist design for a sleek, modern look", "ar": "تصميم بسيط لمظهر أنيق وعصري" }
+      ]
+    },
+    {
       "id": "althea",
-      "name": { "en": "ALTHEA", "ar": "آلثيا" },
-      "image": "https://i.imgur.com/q1LYM10.png",
-      "otherImages": ["https://i.imgur.com/bK2zo0J.png", "https://i.imgur.com/GFhLQL1.png", "https://i.imgur.com/jEgzHYm.png"],
+      "mainCategory": "lightweight",
+      "name": { "en": "ALTHEA", "ar": "ALTHEA" },
+      "image": "https://i.imgur.com/q1LYM10.jpeg",
+      "otherImages": ["https://i.imgur.com/jEgzHYm.jpeg", "https://i.imgur.com/GFhLQL1.jpeg", "https://i.imgur.com/04b88fQ.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
       "shortDescription": { "en": "Orthopaedic light wheelchair with a foldable frame in aluminium.", "ar": "كرسي متحرك طبي خفيف الوزن بإطار قابل للطي من الألومنيوم." },
@@ -116,9 +184,10 @@
     },
     {
       "id": "antares",
-      "name": { "en": "ANTARES", "ar": "أنتاريس" },
-      "image": "https://i.imgur.com/gryKrhT.png",
-      "otherImages": ["https://i.imgur.com/UOnqAvK.png", "https://i.imgur.com/8ZgWEPc.png"],
+      "mainCategory": "lightweight",
+      "name": { "en": "ANTARES", "ar": "ANTARES" },
+      "image": "https://i.imgur.com/gryKrhT.jpeg",
+      "otherImages": ["https://i.imgur.com/UOnqAvK.jpeg", "https://i.imgur.com/8ZgWEPc.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
       "shortDescription": { "en": "Rigid frame tilt-in-space wheelchair with reclining backrest.", "ar": "كرسي متحرك بإطار صلب وميزة الإمالة في الفراغ مع مسند ظهر قابل للانحناء." },
@@ -131,10 +200,28 @@
       ]
     },
     {
+      "id": "powerglide-x1",
+      "mainCategory": "electric",
+      "isFeatured": true,
+      "name": { "en": "PowerGlide X1", "ar": "باورجلايد X1" },
+      "image": "https://i.imgur.com/Y3WJ8eJ.png",
+      "manufacturer": { "en": "Global Mobility", "ar": "جلوبال موبيليتي" },
+      "category": { "en": "Electric Wheelchair", "ar": "كرسي متحرك كهربائي" },
+      "shortDescription": { "en": "Powerful and versatile electric wheelchair with long-range battery.", "ar": "كرسي متحرك كهربائي قوي ومتعدد الاستخدامات ببطارية طويلة المدى." },
+      "countryOfOrigin": { "en": "Germany", "ar": "ألمانيا" },
+      "features": [
+        { "en": "Dual motors for superior power", "ar": "محركات مزدوجة لقوة فائقة" },
+        { "en": "Up to 25km range on a single charge", "ar": "مدى يصل إلى 25 كم بشحنة واحدة" },
+        { "en": "Adjustable joystick control", "ar": "تحكم بعصا قيادة قابلة للتعديل" },
+        { "en": "Comfortable captain's seat", "ar": "مقعد كابتن مريح" }
+      ]
+    },
+    {
       "id": "children-3000",
-      "name": { "en": "CHILDREN 3000", "ar": "للأطفال 3000" },
-      "image": "https://i.imgur.com/osuJGfO.png",
-      "otherImages": ["https://i.imgur.com/ejqloMy.png", "https://i.imgur.com/cM0jOkm.png"],
+      "mainCategory": "children",
+      "name": { "en": "CHILDREN 3000", "ar": "CHILDREN 3000" },
+      "image": "https://i.imgur.com/osuJGfO.jpeg",
+      "otherImages": ["https://i.imgur.com/ejqIoMy.jpeg", "https://i.imgur.com/cM0jOkm.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Children wheelchair", "ar": "كرسي متحرك للأطفال" },
       "shortDescription": { "en": "An ultralight and foldable wheelchair for kids with a 3-year warranty.", "ar": "كرسي متحرك خفيف الوزن وقابل للطي للأطفال مع ضمان 3 سنوات." },
@@ -149,9 +236,11 @@
     },
     {
       "id": "quasar-kid",
-      "name": { "en": "QUASAR KID", "ar": "كوازار للأطفال" },
-      "image": "https://i.imgur.com/k6c1Wmv.png",
-      "otherImages": ["https://i.imgur.com/V250Ppu.png", "https://i.imgur.com/agX5RPB.png"],
+      "mainCategory": "children",
+      "isFeatured": true,
+      "name": { "en": "QUASAR KID", "ar": "QUASAR KID" },
+      "image": "https://i.imgur.com/k6c1Wmw.jpeg",
+      "otherImages": ["https://i.imgur.com/V25OPpu.jpeg", "https://i.imgur.com/agX5RPB.jpeg"],
       "manufacturer": { "en": "Offcarr", "ar": "أوفكار" },
       "category": { "en": "Children wheelchair", "ar": "كرسي متحرك للأطفال" },
       "shortDescription": { "en": "A rigid titanium frame wheelchair for kids, featuring an adjustable axle position and various frame shapes.", "ar": "كرسي متحرك بإطار صلب من التيتانيوم للأطفال، يتميز بوضعية محور قابلة للتعديل وأشكال إطارات متنوعة." },
@@ -163,6 +252,54 @@
         { "en": "Different models of pushing handles for assistant", "ar": "موديلات مختلفة من مقابض الدفع للمساعد" },
         { "en": "3 models of foot-rest", "ar": "3 موديلات لمسند القدم" },
         { "en": "Carbon fibre clothes guard", "ar": "واقي ملابس من ألياف الكربون" }
+      ]
+    },
+    {
+      "id": "comfortrest-standard",
+      "mainCategory": "standard",
+      "name": { "en": "ComfortRest Standard", "ar": "كومفرت ريست ستاندرد" },
+      "image": "https://i.imgur.com/5J3t8Ug.png",
+      "manufacturer": { "en": "DuraMed", "ar": "ديوراميد" },
+      "category": { "en": "Standard Wheelchair", "ar": "كرسي متحرك عادي" },
+      "shortDescription": { "en": "Durable and comfortable standard wheelchair for daily use.", "ar": "كرسي متحرك عادي متين ومريح للاستخدام اليومي." },
+      "countryOfOrigin": { "en": "USA", "ar": "الولايات المتحدة الأمريكية" },
+      "features": [
+        { "en": "Steel frame for maximum durability", "ar": "إطار فولاذي لأقصى درجات المتانة" },
+        { "en": "Padded armrests and nylon upholstery", "ar": "مساند ذراع مبطنة وتنجيد من النايلون" },
+        { "en": "Swing-away footrests", "ar": "مساند قدم قابلة للإزالة" },
+        { "en": "Solid rubber tires", "ar": "إطارات مطاطية صلبة" }
+      ]
+    },
+    {
+      "id": "aquasafe-commode",
+      "mainCategory": "bathroom",
+      "name": { "en": "AquaSafe Commode Chair", "ar": "كرسي حمام أكوا سيف" },
+      "image": "https://i.imgur.com/s6n5z6k.png",
+      "manufacturer": { "en": "SafePath", "ar": "سيف باث" },
+      "category": { "en": "Bathroom Chair", "ar": "كرسي حمام" },
+      "shortDescription": { "en": "Safe and hygienic commode chair for bathroom use.", "ar": "كرسي حمام آمن وصحي للاستخدام في الحمام." },
+      "countryOfOrigin": { "en": "Canada", "ar": "كندا" },
+      "features": [
+        { "en": "Rust-proof aluminum frame", "ar": "إطار من الألومنيوم مقاوم للصدأ" },
+        { "en": "Non-slip rubber feet", "ar": "أقدام مطاطية مانعة للانزلاق" },
+        { "en": "Removable bucket", "ar": "دلو قابل للإزالة" },
+        { "en": "Adjustable height", "ar": "ارتفاع قابل للتعديل" }
+      ]
+    },
+    {
+      "id": "gel-cushion",
+      "mainCategory": "accessories",
+      "name": { "en": "Pressure Relief Gel Cushion", "ar": "وسادة جل لتخفيف الضغط" },
+      "image": "https://i.imgur.com/gA3O6ZJ.png",
+      "manufacturer": { "en": "ComfortPlus", "ar": "كومفرت بلس" },
+      "category": { "en": "Accessory", "ar": "إكسسوار" },
+      "shortDescription": { "en": "High-quality gel cushion for pressure relief and enhanced comfort.", "ar": "وسادة جل عالية الجودة لتخفيف الضغط وتعزيز الراحة." },
+      "countryOfOrigin": { "en": "Taiwan", "ar": "تايوان" },
+      "features": [
+        { "en": "Multi-layer gel and foam construction", "ar": "طبقات متعددة من الجل والفوم" },
+        { "en": "Breathable, waterproof cover", "ar": "غطاء قابل للتنفس ومقاوم للماء" },
+        { "en": "Non-slip base", "ar": "قاعدة مانعة للانزلاق" },
+        { "en": "Available in various sizes", "ar": "متوفرة بأحجام مختلفة" }
       ]
     }
   ],
