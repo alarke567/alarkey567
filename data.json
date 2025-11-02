@@ -166,6 +166,27 @@
       ]
     },
     {
+      "id": "kuschall-compact",
+      "mainCategory": "sport-lightweight",
+      "isFeatured": false,
+      "name": { "en": "Küschall Compact", "ar": "Compact" },
+      "image": "https://i.imgur.com/E8gXYkV.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/G3JYq7n.jpeg",
+        "https://i.imgur.com/2EEBmr4.jpeg"
+      ],
+      "manufacturer": { "en": "Küschall", "ar": "كوشال" },
+      "category": { "en": "Ultra lightweight wheelchair", "ar": "كرسي متحرك خفيف الوزن جداً" },
+      "shortDescription": { "en": "An effortless folding and driving performance, making it the perfect travel companion.", "ar": "أداء طي وقيادة سهل، يجعله رفيق السفر المثالي." },
+      "countryOfOrigin": { "en": "Switzerland", "ar": "سويسرا" },
+      "features": [
+        { "en": "Swing-away or fixed legrests", "ar": "مساند أرجل قابلة للإزالة أو ثابتة" },
+        { "en": "Effortless folding frame", "ar": "إطار سهل الطي" },
+        { "en": "Lightweight and compact design", "ar": "تصميم خفيف الوزن ومدمج" },
+        { "en": "Highly configurable to fit individual needs", "ar": "قابل للتكوين بدرجة عالية ليناسب الاحتياجات الفردية" }
+      ]
+    },
+    {
       "id": "althea",
       "mainCategory": "lightweight",
       "name": { "en": "ALTHEA", "ar": "ALTHEA" },
