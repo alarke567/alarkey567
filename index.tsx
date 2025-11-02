@@ -227,7 +227,6 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
             <div className="footer-main">
                 <div className="footer-col">
                     <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" className="footer-logo"/>
-                    <img src="https://i.imgur.com/L8aVvB4.png" alt="Wheel of Excellence Partner Logo" className="footer-logo"/>
                     <p><T content={translations.footerSlogan} lang={lang} /></p>
                 </div>
                 <div className="footer-col">
@@ -462,6 +461,7 @@ const AboutPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tran
 const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct: (p: Product) => void, translations: any, initialFilter: string }> = ({ data, lang, setSelectedProduct, translations, initialFilter }) => {
     
     const [activeFilter, setActiveFilter] = useState(initialFilter);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         setActiveFilter(initialFilter);
@@ -494,36 +494,61 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
 
     const featuredProducts = data.products.filter(p => p.isFeatured);
 
-    const renderProductGrid = (products: Product[]) => (
-        <div className="product-grid">
-            {products.map(product => (
-                <div key={product.id} className="product-card">
-                    <div className="product-card-image">
-                      <img src={product.image} alt={product.name[lang]} />
+    const renderProductGrid = (products: Product[]) => {
+        const lowercasedQuery = searchQuery.toLowerCase();
+        const searchedProducts = searchQuery.trim() === '' ? products : products.filter(product => 
+            product.name[lang].toLowerCase().includes(lowercasedQuery) ||
+            product.shortDescription[lang].toLowerCase().includes(lowercasedQuery)
+        );
+
+        if (searchedProducts.length === 0) {
+            return <p className="no-results-message"><T content={translations.noResults} lang={lang} /></p>
+        }
+
+        return (
+            <div className="product-grid">
+                {searchedProducts.map(product => (
+                    <div key={product.id} className="product-card">
+                        <div className="product-card-image">
+                          <img src={product.image} alt={product.name[lang]} />
+                        </div>
+                        <h3><T content={product.name} lang={lang}/></h3>
+                        <p><T content={product.shortDescription} lang={lang}/></p>
+                        <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
                     </div>
-                    <h3><T content={product.name} lang={lang}/></h3>
-                    <p><T content={product.shortDescription} lang={lang}/></p>
-                    <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
-                </div>
-            ))}
-        </div>
-    );
+                ))}
+            </div>
+        );
+    };
 
     return (
         <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
             <h1 className="page-title"><T content={translations.navProducts} lang={lang} /></h1>
             <div className="title-divider"></div>
 
-            <div className="product-filter-bar">
-                {filterButtons.map(({ key, translationKey }) => (
-                    <button
-                        key={key}
-                        className={activeFilter === key ? 'active' : ''}
-                        onClick={() => setActiveFilter(key)}
-                    >
-                        <T content={translations[translationKey]} lang={lang} />
-                    </button>
-                ))}
+            <div className="product-controls">
+                <div className="product-search-bar">
+                    <input
+                        type="search"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder={translations.searchPlaceholder[lang]}
+                        aria-label={translations.searchPlaceholder[lang]}
+                    />
+                    <i className="search-icon"></i>
+                </div>
+
+                <div className="product-filter-bar">
+                    {filterButtons.map(({ key, translationKey }) => (
+                        <button
+                            key={key}
+                            className={activeFilter === key ? 'active' : ''}
+                            onClick={() => setActiveFilter(key)}
+                        >
+                            <T content={translations[translationKey]} lang={lang} />
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {activeFilter === 'featured' && (
@@ -697,6 +722,8 @@ function App() {
     productOrigin: {en: "Country of Origin", ar: "بلد الصنع"},
     productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"},
     thumbnailAlt: { en: "Thumbnail", ar: "صورة مصغرة" },
+    searchPlaceholder: { en: 'Search for a product...', ar: 'ابحث عن منتج...' },
+    noResults: { en: 'No products found matching your criteria.', ar: 'لم يتم العثور على منتجات تطابق معاييرك.' },
     // Filter Titles
     filterFeatured: { en: 'Featured', ar: 'المميزة' },
     filterAll: { en: 'All', ar: 'الكل' },
