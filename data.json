@@ -1,4 +1,3 @@
-
 {
   "slides": [
     {
@@ -276,35 +275,164 @@
       ]
     },
     {
-      "id": "comfortrest-standard",
-      "mainCategory": "standard",
-      "name": { "en": "ComfortRest Standard", "ar": "كومفرت ريست ستاندرد" },
-      "image": "https://i.imgur.com/5J3t8Ug.png",
-      "manufacturer": { "en": "DuraMed", "ar": "ديوراميد" },
-      "category": { "en": "Standard Wheelchair", "ar": "كرسي متحرك عادي" },
-      "shortDescription": { "en": "Durable and comfortable standard wheelchair for daily use.", "ar": "كرسي متحرك عادي متين ومريح للاستخدام اليومي." },
-      "countryOfOrigin": { "en": "USA", "ar": "الولايات المتحدة الأمريكية" },
+      "id": "un2021-buggy",
+      "mainCategory": "children",
+      "name": { "en": "UN2021 Buggy", "ar": "عربة الأطفال UN2021" },
+      "image": "https://i.imgur.com/s0y5aWO.png",
+      "otherImages": [ "https://i.imgur.com/k0A2AhT.png" ],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Children's Wheelchair", "ar": "كرسي اطفال" },
+      "shortDescription": { "en": "An aluminum buggy for children featuring a foldable frame, detachable seat, and multiple adjustable components for comfort and safety, including a table and umbrella.", "ar": "عربة أطفال من الألومنيوم تتميز بإطار قابل للطي، ومقعد قابل للفصل، ومكونات متعددة قابلة للتعديل للراحة والأمان، بما في ذلك طاولة ومظلة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
       "features": [
-        { "en": "Steel frame for maximum durability", "ar": "إطار فولاذي لأقصى درجات المتانة" },
-        { "en": "Padded armrests and nylon upholstery", "ar": "مساند ذراع مبطنة وتنجيد من النايلون" },
-        { "en": "Swing-away footrests", "ar": "مساند قدم قابلة للإزالة" },
-        { "en": "Solid rubber tires", "ar": "إطارات مطاطية صلبة" }
+        { "en": "Aluminum tube with powder coating surface", "ar": "أنبوب ألومنيوم مع طلاء بودرة" },
+        { "en": "Fold-able frame, detachable seat and wheels", "ar": "إطار قابل للطي ومقعد وعجلات قابلة للفصل" },
+        { "en": "Fully adjustable: seat angle, backrest, armrest, footrest", "ar": "قابل للتعديل بالكامل: زاوية المقعد، مسند الظهر، مسند الذراع، مسند القدم" },
+        { "en": "Pneumatic tires with suspension", "ar": "إطارات هوائية مع نظام تعليق" },
+        { "en": "Includes table and umbrella", "ar": "يشمل طاولة ومظلة" },
+        { "en": "Fire-resistant Oxford upholstery", "ar": "تنجيد قماش أكسفورد مقاوم للحريق" },
+        { "en": "Butterfly seat belt for safety", "ar": "حزام أمان على شكل فراشة للسلامة" },
+        { "en": "Self-locked rear brakes", "ar": "فرامل خلفية ذاتية القفل" },
+        { "en": "Buggy loading capacity: 30kg", "ar": "سعة تحميل العربة: 30 كجم" }
       ]
     },
     {
-      "id": "aquasafe-commode",
-      "mainCategory": "bathroom",
-      "name": { "en": "AquaSafe Commode Chair", "ar": "كرسي حمام أكوا سيف" },
-      "image": "https://i.imgur.com/s6n5z6k.png",
-      "manufacturer": { "en": "SafePath", "ar": "سيف باث" },
-      "category": { "en": "Bathroom Chair", "ar": "كرسي حمام" },
-      "shortDescription": { "en": "Safe and hygienic commode chair for bathroom use.", "ar": "كرسي حمام آمن وصحي للاستخدام في الحمام." },
-      "countryOfOrigin": { "en": "Canada", "ar": "كندا" },
+      "id": "un2013",
+      "mainCategory": "lightweight",
+      "name": { "en": "Aluminum Wheelchair UN2013", "ar": "كرسي متحرك ألومنيوم UN2013" },
+      "image": "https://i.imgur.com/s7dqX0j.png",
+      "otherImages": ["https://i.imgur.com/BdWT0sT.png", "https://i.imgur.com/O1oECiu.jpeg"],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Lightweight Wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
+      "shortDescription": { "en": "An adjustable lightweight aluminum wheelchair featuring a double cross brace, detachable armrests, and swing-out footrests for enhanced versatility and comfort.", "ar": "كرسي متحرك خفيف الوزن من الألومنيوم قابل للتعديل، يتميز بدعامة مزدوجة ومساند ذراع قابلة للفصل ومساند قدم قابلة للدوران للخارج لتعزيز التنوع والراحة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
       "features": [
-        { "en": "Rust-proof aluminum frame", "ar": "إطار من الألومنيوم مقاوم للصدأ" },
-        { "en": "Non-slip rubber feet", "ar": "أقدام مطاطية مانعة للانزلاق" },
-        { "en": "Removable bucket", "ar": "دلو قابل للإزالة" },
-        { "en": "Adjustable height", "ar": "ارتفاع قابل للتعديل" }
+        { "en": "Aluminum frame with powder coating surface", "ar": "إطار من الألومنيوم مع طلاء بودرة" },
+        { "en": "Aluminum double cross brace with 4-piece cross bearing", "ar": "دعامة مزدوجة من الألومنيوم مع محمل رباعي القطع" },
+        { "en": "Flip-up, detachable, and height-adjustable armrest", "ar": "مسند ذراع قابل للطي والفصل وتعديل الارتفاع" },
+        { "en": "Swing-in & swing-out footrest (optional elevating footrest)", "ar": "مسند قدم قابل للدوران للداخل والخارج (مع خيار الرفع)" },
+        { "en": "24-inch spoke wheel with PU tire and aluminum push rim", "ar": "عجلة 24 بوصة مع إطار PU وحافة دفع من الألومنيوم" },
+        { "en": "Aluminum front fork", "ar": "شوكة أمامية من الألومنيوم" },
+        { "en": "7\"x2\" or 8\"x2\" front wheels", "ar": "عجلات أمامية 7x2 أو 8x2 بوصة" },
+        { "en": "Nylon seat and back upholstery", "ar": "تنجيد المقعد والظهر من النايلون" },
+        { "en": "Angle-adjustable footplate", "ar": "لوحة قدم قابلة لتعديل الزاوية" },
+        { "en": "Available seat widths: 16, 17, 18, 19, 20, and 22 inches", "ar": "عروض المقاعد المتاحة: 16، 17، 18، 19، 20، و 22 بوصة" }
+      ]
+    },
+    {
+      "id": "un2013t",
+      "mainCategory": "lightweight",
+      "name": { "en": "Aluminum Wheelchair UN2013T", "ar": "كرسي متحرك ألومنيوم UN2013T" },
+      "image": "https://i.imgur.com/xmwqTcq.png",
+      "otherImages": [
+        "https://i.imgur.com/wWn8zfU.png",
+        "https://i.imgur.com/CgeRLZl.jpeg"
+      ],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Lightweight Wheelchair", "ar": "كرسي متحرك خفيف الوزن" },
+      "shortDescription": { "en": "An adjustable lightweight aluminum wheelchair featuring a double cross brace, detachable armrests, and swing-out footrests for enhanced versatility and comfort.", "ar": "كرسي متحرك خفيف الوزن من الألومنيوم قابل للتعديل، يتميز بدعامة مزدوجة ومساند ذراع قابلة للفصل ومساند قدم قابلة للدوران للخارج لتعزيز التنوع والراحة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
+      "features": [
+        { "en": "Aluminum frame with powder coating surface", "ar": "إطار من الألومنيوم مع طلاء بودرة" },
+        { "en": "Double cross brace with black powder coating", "ar": "دعامة مزدوجة مع طلاء بودرة أسود" },
+        { "en": "Flip-up, detachable armrest with height-adjustable armpad", "ar": "مسند ذراع قابل للطي والفصل مع وسادة ذراع قابلة لتعديل الارتفاع" },
+        { "en": "Swing-in & swing-out footrest", "ar": "مسند قدم قابل للدوران للداخل والخارج" },
+        { "en": "12-inch PU rear wheels", "ar": "عجلات خلفية 12 بوصة من البولي يوريثان" },
+        { "en": "Aluminum front fork", "ar": "شوكة أمامية من الألومنيوم" },
+        { "en": "7\"x2\" PU front wheels", "ar": "عجلات أمامية 7x2 بوصة من البولي يوريثان" },
+        { "en": "Nylon seat and back upholstery", "ar": "تنجيد المقعد والظهر من النايلون" },
+        { "en": "Angle-adjustable footplate", "ar": "لوحة قدم قابلة لتعديل الزاوية" },
+        { "en": "Available seat widths: 16, 17, 18, 19, 20, and 22 inches", "ar": "عروض المقاعد المتاحة: 16، 17، 18، 19، 20، و 22 بوصة" }
+      ]
+    },
+    {
+      "id": "un1005",
+      "mainCategory": "standard",
+      "name": { "en": "Steel Wheelchair UN1005", "ar": "كرسي متحرك فولاذي UN1005" },
+      "image": "https://i.imgur.com/4h3kgmw.png",
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Standard Wheelchair", "ar": "كرسي متحرك عادي" },
+      "shortDescription": { "en": "A durable steel wheelchair with flip-up armrests and swing-out footrests, designed for daily use and convenience.", "ar": "كرسي متحرك فولاذي متين مع مساند ذراع قابلة للطي ومساند قدم قابلة للدوران للخارج، مصمم للاستخدام اليومي والراحة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
+      "features": [
+        { "en": "Steel frame with powder coating surface", "ar": "إطار فولاذي مع طلاء بودرة" },
+        { "en": "Steel cross brace", "ar": "دعامة فولاذية" },
+        { "en": "Flip-up armrest with PVC pad", "ar": "مسند ذراع قابل للطي مع وسادة PVC" },
+        { "en": "Swing-in & swing-out footrest (optional elevating footrest)", "ar": "مسند قدم قابل للدوران للداخل والخارج (مع خيار الرفع)" },
+        { "en": "Nylon footplate", "ar": "لوحة قدم من النايلون" },
+        { "en": "8\"x1\" solid PU caster", "ar": "عجلة أمامية 8x1 بوصة صلبة من البولي يوريثان" },
+        { "en": "24-inch spoke wheel with PU tire and steel push rim", "ar": "عجلة 24 بوصة مع إطار PU وحافة دفع فولاذية" },
+        { "en": "Nylon seat and back upholstery", "ar": "تنجيد المقعد والظهر من النايلون" },
+        { "en": "Steel front fork", "ar": "شوكة أمامية فولاذية" },
+        { "en": "Anti-tipper (optional)", "ar": "مانع انقلاب (اختياري)" }
+      ]
+    },
+    {
+      "id": "un4003",
+      "mainCategory": "bathroom",
+      "name": { "en": "Commode Chair UN4003", "ar": "كرسي حمام UN4003" },
+      "image": "https://i.imgur.com/FG3aXHR.jpeg",
+      "otherImages": ["https://i.imgur.com/8tfynld.jpeg", "https://i.imgur.com/ycAMKl2.jpeg"],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Bathroom Chair", "ar": "كرسي حمام" },
+      "shortDescription": { "en": "A lightweight aluminum commode chair with a white powder-coated frame, featuring a comfortable PU seat, flip-up armrests, and braked wheels for enhanced safety and convenience.", "ar": "كرسي حمام خفيف الوزن من الألومنيوم بإطار مطلي باللون الأبيض، يتميز بمقعد مريح من البولي يوريثان ومساند ذراع قابلة للطي وعجلات مع فرامل لتعزيز السلامة والراحة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
+      "features": [
+        { "en": "Lightweight aluminum frame with white powder coating", "ar": "إطار خفيف الوزن من الألومنيوم مطلي بالبودرة البيضاء" },
+        { "en": "Removable padded PU seat", "ar": "مقعد مبطن قابل للإزالة من مادة البولي يوريثان" },
+        { "en": "Four 5-inch wheels, all with brakes", "ar": "أربع عجلات مقاس 5 بوصات، جميعها مزودة بفرامل" },
+        { "en": "Comfortable padded PU backrest", "ar": "مسند ظهر مريح ومبطن من مادة البولي يوريثان" },
+        { "en": "Flip-up padded armrests for easy transfer", "ar": "مساند ذراع مبطنة قابلة للطي لتسهيل النقل" },
+        { "en": "Easy-to-handle commode bucket", "ar": "وعاء حمام سهل التعامل" },
+        { "en": "Available in multiple seat widths (16, 18, 20, 22 inches)", "ar": "متوفر بعروض مقاعد متعددة (16، 18، 20، 22 بوصة)" }
+      ]
+    },
+    {
+      "id": "un4005",
+      "mainCategory": "bathroom",
+      "name": { "en": "Commode Chair UN4005", "ar": "كرسي حمام UN4005" },
+      "image": "https://i.imgur.com/8CPpN9Y.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/ctPPs7e.jpeg",
+        "https://i.imgur.com/Lxr6yvr.jpeg",
+        "https://i.imgur.com/hRX6yza.jpeg"
+      ],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Bathroom Chair", "ar": "كرسي حمام" },
+      "shortDescription": { "en": "A versatile aluminum commode chair with large rear wheels, featuring a comfortable PU seat, flip-up armrests, and braked wheels for enhanced mobility and safety.", "ar": "كرسي حمام متعدد الاستخدامات من الألومنيوم بعجلات خلفية كبيرة، يتميز بمقعد مريح من البولي يوريثان، ومساند ذراع قابلة للطي، وعجلات مع فرامل لتعزيز الحركة والسلامة." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
+      "features": [
+        { "en": "Aluminum frame with white powder coating surface", "ar": "إطار من الألومنيوم مطلي بالبودرة البيضاء" },
+        { "en": "Removable PU Seat", "ar": "مقعد قابل للإزالة من مادة البولي يوريثان" },
+        { "en": "Two 5-inch front wheels with brakes", "ar": "عجلتان أماميتان مقاس 5 بوصات مع فرامل" },
+        { "en": "Two 24-inch rear wheels with brakes", "ar": "عجلتان خلفيتان مقاس 24 بوصة مع فرامل" },
+        { "en": "Comfortable padded PU backrest", "ar": "مسند ظهر مريح ومبطن من مادة البولي يوريثان" },
+        { "en": "Flip-up padded armrests", "ar": "مساند ذراع مبطنة قابلة للطي" },
+        { "en": "Easy-to-handle commode bucket", "ar": "وعاء حمام سهل التعامل" },
+        { "en": "Available seat widths: 16, 18, 20, and 22 inches", "ar": "عروض المقاعد المتاحة: 16، 18، 20، و 22 بوصة" }
+      ]
+    },
+    {
+      "id": "un4004",
+      "mainCategory": "bathroom",
+      "name": { "en": "Commode Chair UN4004", "ar": "كرسي حمام UN4004" },
+      "image": "https://i.imgur.com/Ytd9Abg.jpeg",
+      "otherImages": [
+        "https://i.imgur.com/CeG9jom.jpeg",
+        "https://i.imgur.com/MTanx3e.jpeg"
+      ],
+      "manufacturer": { "en": "U-Nurse Medical", "ar": "يو-نيرس ميديكال" },
+      "category": { "en": "Bathroom Chair", "ar": "كرسي حمام" },
+      "shortDescription": { "en": "A comfortable and convenient aluminum commode chair featuring a powder-coated frame, removable moulded seat, swing-away footrests, and flip-up armrests for easy access and handling.", "ar": "كرسي حمام مريح وعملي من الألومنيوم، يتميز بإطار مطلي بالبودرة، ومقعد مصبوب قابل للإزالة، ومساند قدم قابلة للإزالة والدوران، ومساند ذراع قابلة للطي لسهولة الوصول والاستخدام." },
+      "countryOfOrigin": { "en": "China", "ar": "الصين" },
+      "features": [
+        { "en": "Aluminum frame with powder coating surface", "ar": "إطار من الألومنيوم مطلي بالبودرة" },
+        { "en": "Removable middle moulded seat", "ar": "مقعد مصبوب وسطي قابل للإزالة" },
+        { "en": "Four 5-inch castors with brakes", "ar": "أربع عجلات مقاس 5 بوصات مع فرامل" },
+        { "en": "Swing-away detachable footrest", "ar": "مسند قدم قابل للفصل والدوران للخارج" },
+        { "en": "Comfortable padded backrest", "ar": "مسند ظهر مبطن ومريح" },
+        { "en": "Flip-up padded armrest", "ar": "مسند ذراع مبطن قابل للطي" },
+        { "en": "Easy-to-handle commode bowl with slide-out access from the back", "ar": "وعاء حمام سهل التعامل مع إمكانية السحب من الخلف" }
       ]
     },
     {

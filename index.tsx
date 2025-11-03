@@ -269,7 +269,6 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                     <div className="social-icons">
                         <a href="#" aria-label={translations.ariaFollowFacebook[lang]}><i className="icon-facebook"></i></a>
                         <a href="#" aria-label={translations.ariaFollowTwitter[lang]}><i className="icon-twitter"></i></a>
-                        <a href="mailto:Customer@woe.sa" aria-label={translations.ariaSendEmail[lang]}><i className="icon-email"></i></a>
                         <a href="#" aria-label={translations.ariaFollowInstagram[lang]}><i className="icon-instagram"></i></a>
                     </div>
                 </div>
@@ -285,11 +284,13 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
 
 const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lang: Language, translations: any }> = ({ product, onClose, lang, translations }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (product) {
       setCurrentImageIndex(0);
+      setIsZoomed(false);
     }
   }, [product]);
 
@@ -346,7 +347,14 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
         <button className="modal-close" onClick={onClose} aria-label={translations.ariaCloseModal[lang]}>&times;</button>
         <div className="modal-body">
             <div className="modal-gallery">
-                 <div className="modal-main-image">
+                 <div 
+                    className={`modal-main-image ${isZoomed ? 'zoomed' : ''}`}
+                    onClick={() => setIsZoomed(!isZoomed)}
+                    role="button"
+                    aria-label={isZoomed ? translations.ariaZoomOut[lang] : translations.ariaZoomIn[lang]}
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsZoomed(!isZoomed); }}}
+                  >
                     <img src={allImages[currentImageIndex]} alt={product.name[lang]} />
                  </div>
                  {allImages.length > 1 && (
@@ -355,7 +363,10 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
                              <button
                                  key={index}
                                  className={`thumbnail-button ${currentImageIndex === index ? 'active' : ''}`}
-                                 onClick={() => setCurrentImageIndex(index)}
+                                 onClick={() => {
+                                    setCurrentImageIndex(index);
+                                    setIsZoomed(false);
+                                 }}
                                  aria-label={`${translations.ariaViewImage[lang]} ${index + 1}`}
                               >
                                <img
@@ -970,6 +981,8 @@ function App() {
     ariaCloseModal: { en: 'Close product details modal', ar: 'إغلاق نافذة تفاصيل المنتج' },
     ariaViewImage: { en: 'View image', ar: 'عرض الصورة' },
     ariaContactForPrice: { en: 'Contact us for price information', ar: 'تواصل معنا لمعرفة السعر' },
+    ariaZoomIn: { en: 'Zoom in on image', ar: 'تكبير الصورة' },
+    ariaZoomOut: { en: 'Zoom out of image', ar: 'تصغير الصورة' },
   };
 
   useEffect(() => {
