@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // --- Data Types ---
@@ -54,6 +54,24 @@ interface AppData {
 
 type Language = 'en' | 'ar';
 type Page = 'home' | 'about' | 'products' | 'services' | 'faq' | 'contact';
+
+// --- Custom Hooks ---
+const useDebounce = (value: string, delay: number) => {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value);
+        }, delay);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [value, delay]);
+
+    return debouncedValue;
+};
+
 
 // --- Helper Components ---
 const T: React.FC<{ content: LocalizedString; lang: Language }> = ({ content, lang }) => {
@@ -226,7 +244,7 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
             </div>
             <div className="footer-main">
                 <div className="footer-col">
-                    <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" className="footer-logo"/>
+                    <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" className="footer-logo" loading="lazy" />
                     <p><T content={translations.footerSlogan} lang={lang} /></p>
                 </div>
                 <div className="footer-col">
@@ -267,12 +285,56 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
 
 const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lang: Language, translations: any }> = ({ product, onClose, lang, translations }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (product) {
       setCurrentImageIndex(0);
     }
   }, [product]);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+          onClose();
+          return;
+      }
+      
+      if (event.key === 'Tab') {
+          const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
+              'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          );
+          if (!focusableElements || focusableElements.length === 0) return;
+          
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (event.shiftKey) {
+              if (document.activeElement === firstElement) {
+                  lastElement.focus();
+                  event.preventDefault();
+              }
+          } else {
+              if (document.activeElement === lastElement) {
+                  firstElement.focus();
+                  event.preventDefault();
+              }
+          }
+      }
+  }, [onClose]);
+
+  useEffect(() => {
+    const modalElement = modalRef.current;
+    if (product && modalElement) {
+        document.addEventListener('keydown', handleKeyDown);
+        const focusableElements = modalElement.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus();
+        }
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }
+  }, [product, handleKeyDown]);
   
   if (!product) return null;
 
@@ -280,7 +342,7 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
 
   return (
     <div className={`modal-overlay ${lang === 'ar' ? 'rtl' : ''}`} onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" ref={modalRef} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <button className="modal-close" onClick={onClose} aria-label={translations.ariaCloseModal[lang]}>&times;</button>
         <div className="modal-body">
             <div className="modal-gallery">
@@ -299,6 +361,7 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
                                <img
                                  src={img}
                                  alt={`${translations.thumbnailAlt[lang]} ${index + 1}`}
+                                 loading="lazy"
                                />
                              </button>
                          ))}
@@ -306,7 +369,7 @@ const ProductModal: React.FC<{ product: Product | null; onClose: () => void; lan
                  )}
             </div>
             <div className="modal-details">
-                <h2><T content={product.name} lang={lang} /></h2>
+                <h2 id="modal-title"><T content={product.name} lang={lang} /></h2>
                 <div className="product-tags">
                     <span><T content={product.manufacturer} lang={lang}/></span>
                     <span><T content={product.category} lang={lang}/></span>
@@ -349,6 +412,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
             className={`hero-slide ${index === currentSlide ? 'active' : ''}`}
             style={{ backgroundImage: `url(${slide.image})` }}
           >
+             {index === 0 && <img src={slide.image} alt="" style={{display: 'none'}} />}
             <div className="hero-content">
               <h1><T content={slide.title} lang={lang} /></h1>
               <p><T content={slide.subtitle} lang={lang} /></p>
@@ -377,7 +441,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
           <div className="title-divider"></div>
           <div className="home-about-content">
               <div className="home-about-image">
-                  <img src="https://i.imgur.com/sUARy23.png" alt="About us"/>
+                  <img src="https://i.imgur.com/sUARy23.png" alt="About us" loading="lazy" />
               </div>
               <div className="home-about-text">
                   <p><T content={translations.aboutP1} lang={lang} /></p>
@@ -394,7 +458,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
           <div className="services-grid">
             {data.services.slice(0, 3).map(service => (
               <div key={service.id} className="service-card">
-                <img src={service.image} alt={service.title[lang]}/>
+                <img src={service.image} alt={service.title[lang]} loading="lazy" />
                 <h3><T content={service.title} lang={lang}/></h3>
                 <p><T content={service.description} lang={lang}/></p>
               </div>
@@ -411,11 +475,17 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
               {data.products.filter(p => p.isFeatured).slice(0, 3).map(product => (
                   <div key={product.id} className="product-card">
                       <div className="product-card-image">
-                        <img src={product.image} alt={product.name[lang]} />
+                        <img src={product.image} alt={product.name[lang]} loading="lazy" />
                       </div>
-                      <h3><T content={product.name} lang={lang}/></h3>
-                      <p><T content={product.shortDescription} lang={lang}/></p>
-                      <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
+                       <div className="product-card-info">
+                            <div className="product-card-tags">
+                                <span className="manufacturer"><T content={product.manufacturer} lang={lang} /></span>
+                                <span className="category"><T content={product.category} lang={lang} /></span>
+                            </div>
+                            <h3><T content={product.name} lang={lang}/></h3>
+                            <p><T content={product.shortDescription} lang={lang}/></p>
+                            <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
+                       </div>
                   </div>
               ))}
           </div>
@@ -430,7 +500,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
               <div className="partners-grid">
                   {data.partners.map(partner => (
                       <div key={partner.name} className="partner-card">
-                         <img src={partner.logo} alt={partner.name} />
+                         <img src={partner.logo} alt={partner.name} loading="lazy" />
                       </div>
                   ))}
               </div>
@@ -452,7 +522,7 @@ const AboutPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tran
                 <p><T content={translations.aboutP2} lang={lang} /></p>
             </div>
             <div className="about-image">
-                <img src="https://i.imgur.com/sUARy23.png" alt="About us image"/>
+                <img src="https://i.imgur.com/sUARy23.png" alt="About us image" loading="lazy" />
             </div>
         </div>
     </div>
@@ -462,6 +532,8 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
     
     const [activeFilter, setActiveFilter] = useState(initialFilter);
     const [searchQuery, setSearchQuery] = useState('');
+    const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
 
     useEffect(() => {
         setActiveFilter(initialFilter);
@@ -482,7 +554,7 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
         { key: 'all', translationKey: 'filterAll' },
         ...categoryOrder
     ];
-
+    
     const productsByCategory = data.products.reduce((acc, product) => {
         const category = product.mainCategory || 'standard'; // Fallback category
         if (!acc[category]) {
@@ -494,15 +566,23 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
 
     const featuredProducts = data.products.filter(p => p.isFeatured);
 
-    const renderProductGrid = (products: Product[]) => {
-        const lowercasedQuery = searchQuery.toLowerCase();
-        const searchedProducts = searchQuery.trim() === '' ? products : products.filter(product => 
+    const filterAndSearchProducts = (products: Product[]) => {
+        const lowercasedQuery = debouncedSearchQuery.toLowerCase();
+        if (lowercasedQuery.trim() === '') return products;
+        
+        return products.filter(product => 
             product.name[lang].toLowerCase().includes(lowercasedQuery) ||
-            product.shortDescription[lang].toLowerCase().includes(lowercasedQuery)
+            product.shortDescription[lang].toLowerCase().includes(lowercasedQuery) ||
+            product.manufacturer[lang].toLowerCase().includes(lowercasedQuery) ||
+            product.category[lang].toLowerCase().includes(lowercasedQuery)
         );
+    };
+
+    const renderProductGrid = (products: Product[]) => {
+        const searchedProducts = filterAndSearchProducts(products);
 
         if (searchedProducts.length === 0) {
-            return <p className="no-results-message"><T content={translations.noResults} lang={lang} /></p>
+            return null;
         }
 
         return (
@@ -510,14 +590,90 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
                 {searchedProducts.map(product => (
                     <div key={product.id} className="product-card">
                         <div className="product-card-image">
-                          <img src={product.image} alt={product.name[lang]} />
+                          <img src={product.image} alt={product.name[lang]} loading="lazy" />
                         </div>
-                        <h3><T content={product.name} lang={lang}/></h3>
-                        <p><T content={product.shortDescription} lang={lang}/></p>
-                        <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
+                        <div className="product-card-info">
+                            <div className="product-card-tags">
+                                <span className="manufacturer"><T content={product.manufacturer} lang={lang} /></span>
+                                <span className="category"><T content={product.category} lang={lang} /></span>
+                            </div>
+                            <h3><T content={product.name} lang={lang}/></h3>
+                            <p><T content={product.shortDescription} lang={lang}/></p>
+                            <button className="cta-button-outline" onClick={() => setSelectedProduct(product)} aria-label={`${translations.ariaViewDetails[lang]} ${product.name[lang]}`}><T content={translations.viewDetails} lang={lang} /></button>
+                        </div>
                     </div>
                 ))}
             </div>
+        );
+    };
+    
+    const renderContent = () => {
+        let hasResults = false;
+        
+        const featuredGrid = renderProductGrid(featuredProducts);
+        if (featuredGrid) hasResults = true;
+
+        const allCategoriesContent = categoryOrder.map(({ key, translationKey }) => {
+            const categoryProducts = productsByCategory[key];
+            if (!categoryProducts || categoryProducts.length === 0) return null;
+            
+            const grid = renderProductGrid(categoryProducts);
+            if (!grid) return null;
+            
+            hasResults = true;
+            const productCount = React.Children.count(grid.props.children);
+
+            return (
+                <section key={key} className="product-category-section">
+                    <div className="product-category-header">
+                        <h2 className="product-category-title">
+                            <T content={translations[translationKey]} lang={lang} />
+                        </h2>
+                        <span className="product-count">{productCount}</span>
+                    </div>
+                    {grid}
+                </section>
+            );
+        }).filter(Boolean);
+
+        if (activeFilter === 'featured') {
+             if (!featuredGrid) return <NoResults lang={lang} translations={translations} />;
+             const productCount = React.Children.count(featuredGrid.props.children);
+             return (
+                 <section className="product-category-section">
+                    <div className="product-category-header">
+                        <h2 className="product-category-title">
+                            <T content={translations.filterFeatured} lang={lang} />
+                        </h2>
+                        <span className="product-count">{productCount}</span>
+                    </div>
+                    {featuredGrid}
+                </section>
+             );
+        }
+
+        if (activeFilter === 'all') {
+            if (!hasResults) return <NoResults lang={lang} translations={translations} />;
+            return <>{allCategoriesContent}</>;
+        }
+
+        // Single category view
+        const category = categoryOrder.find(c => c.key === activeFilter);
+        const categoryProducts = productsByCategory[activeFilter] || [];
+        const grid = renderProductGrid(categoryProducts);
+         if (!grid) return <NoResults lang={lang} translations={translations} />;
+
+        const productCount = React.Children.count(grid.props.children);
+        return (
+            <section className="product-category-section">
+                <div className="product-category-header">
+                    <h2 className="product-category-title">
+                        <T content={translations[category?.translationKey || '']} lang={lang} />
+                    </h2>
+                     <span className="product-count">{productCount}</span>
+                </div>
+                {grid}
+            </section>
         );
     };
 
@@ -550,44 +706,18 @@ const ProductsPage: React.FC<{ data: AppData; lang: Language; setSelectedProduct
                     ))}
                 </div>
             </div>
-
-            {activeFilter === 'featured' && (
-                 <section className="product-category-section">
-                    <h2 className="product-category-title">
-                        <T content={translations.filterFeatured} lang={lang} />
-                    </h2>
-                    {renderProductGrid(featuredProducts)}
-                </section>
-            )}
-
-            {activeFilter === 'all' && (
-                <>
-                    {categoryOrder.map(({ key, translationKey }) => {
-                        const categoryProducts = productsByCategory[key];
-                        if (!categoryProducts || categoryProducts.length === 0) return null;
-                        return (
-                            <section key={key} className="product-category-section">
-                                <h2 className="product-category-title">
-                                    <T content={translations[translationKey]} lang={lang} />
-                                </h2>
-                                {renderProductGrid(categoryProducts)}
-                            </section>
-                        );
-                    })}
-                </>
-            )}
-
-            {activeFilter !== 'all' && activeFilter !== 'featured' && (
-                 <section className="product-category-section">
-                    <h2 className="product-category-title">
-                        <T content={translations[categoryOrder.find(c => c.key === activeFilter)?.translationKey || '']} lang={lang} />
-                    </h2>
-                    {renderProductGrid(productsByCategory[activeFilter] || [])}
-                </section>
-            )}
+            {renderContent()}
         </div>
     );
 };
+
+const NoResults: React.FC<{lang: Language, translations: any}> = ({lang, translations}) => (
+    <div className="no-results-container">
+        <span>🤷</span>
+        <p className="no-results-message"><T content={translations.noResults} lang={lang} /></p>
+    </div>
+);
+
 
 const ServicesPage: React.FC<{ data: AppData; lang: Language, translations: any }> = ({ data, lang, translations }) => (
     <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
@@ -596,7 +726,7 @@ const ServicesPage: React.FC<{ data: AppData; lang: Language, translations: any 
         <div className="services-grid page-grid">
             {data.services.map(service => (
                 <div key={service.id} className="service-card">
-                    <img src={service.image} alt={service.title[lang]}/>
+                    <img src={service.image} alt={service.title[lang]} loading="lazy"/>
                     <h3><T content={service.title} lang={lang}/></h3>
                     <p><T content={service.description} lang={lang}/></p>
                 </div>
@@ -642,19 +772,68 @@ const FAQPage: React.FC<{ data: AppData; lang: Language, translations: any }> = 
     );
 };
 
-const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, translations }) => (
+const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, translations }) => {
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [errors, setErrors] = useState<{name?: string, email?: string, message?: string}>({});
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const validate = () => {
+        const newErrors: {name?: string, email?: string, message?: string} = {};
+        if (!formData.name) newErrors.name = translations.formErrorRequired[lang];
+        if (!formData.email) {
+            newErrors.email = translations.formErrorRequired[lang];
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = translations.formErrorInvalidEmail[lang];
+        }
+        if (!formData.message) newErrors.message = translations.formErrorRequired[lang];
+        
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (validate()) {
+            console.log("Form Submitted:", formData);
+            setIsSubmitted(true);
+            setFormData({ name: '', email: '', message: '' });
+            setTimeout(() => setIsSubmitted(false), 5000); // Hide message after 5s
+        }
+    };
+    
+    return (
     <div className={`page-container container ${lang === 'ar' ? 'rtl' : ''}`}>
         <h1 className="page-title"><T content={translations.navContact} lang={lang} /></h1>
         <div className="title-divider"></div>
         <div className="contact-content">
             <div className="contact-form">
                 <h3><T content={translations.contactFormTitle} lang={lang} /></h3>
-                <form>
-                    <input type="text" placeholder={translations.formName[lang]} />
-                    <input type="email" placeholder={translations.formEmail[lang]} />
-                    <textarea rows={5} placeholder={translations.formMessage[lang]}></textarea>
-                    <button type="submit" className="cta-button" aria-label={translations.ariaSendMessage[lang]}><T content={translations.formSend} lang={lang} /></button>
-                </form>
+                {isSubmitted ? (
+                    <div className="form-success-message" role="alert">
+                        <T content={translations.formSuccess} lang={lang} />
+                    </div>
+                ) : (
+                    <form onSubmit={handleSubmit} noValidate>
+                        <div className="form-group">
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder={translations.formName[lang]} required className={errors.name ? 'error' : ''} />
+                            {errors.name && <p className="error-message">{errors.name}</p>}
+                        </div>
+                         <div className="form-group">
+                            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder={translations.formEmail[lang]} required className={errors.email ? 'error' : ''} />
+                            {errors.email && <p className="error-message">{errors.email}</p>}
+                        </div>
+                         <div className="form-group">
+                            <textarea name="message" rows={5} value={formData.message} onChange={handleChange} placeholder={translations.formMessage[lang]} required className={errors.message ? 'error' : ''}></textarea>
+                            {errors.message && <p className="error-message">{errors.message}</p>}
+                        </div>
+                        <button type="submit" className="cta-button" aria-label={translations.ariaSendMessage[lang]}><T content={translations.formSend} lang={lang} /></button>
+                    </form>
+                )}
             </div>
             <div className="contact-info">
                 <h3><T content={translations.contactInfoTitle} lang={lang} /></h3>
@@ -670,7 +849,42 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
             </div>
         </div>
     </div>
-);
+    )
+};
+
+const ScrollToTopButton: React.FC<{lang: Language}> = ({lang}) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    const toggleVisibility = () => {
+        if (window.pageYOffset > 300) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', toggleVisibility);
+        return () => window.removeEventListener('scroll', toggleVisibility);
+    }, []);
+
+    return (
+        <button
+            className={`scroll-to-top ${isVisible ? 'visible' : ''} ${lang === 'ar' ? 'rtl' : ''}`}
+            onClick={scrollToTop}
+            aria-label={lang === 'en' ? 'Scroll to top' : 'العودة للأعلى'}
+        >
+            &#8679;
+        </button>
+    );
+};
 
 
 // --- Main App Component ---
@@ -704,7 +918,7 @@ function App() {
     viewAllProducts: { en: 'View All Products', ar: 'عرض كل المنتجات' },
     partnersTitle: { en: 'Partners of Success', ar: 'شركاء النجاح' },
     footerSlogan: { en: 'Leading mobility solutions for a better quality of life.', ar: 'حلول تنقل رائدة لجودة حياة أفضل.' },
-    footerLinks: { en: 'Quick Links', ar: 'روابط سترة' },
+    footerLinks: { en: 'Quick Links', ar: 'روابط سريعة' },
     footerSocial: { en: 'Follow Us', ar: 'تابعنا' },
     footerRights: { en: 'Wheel of Excellence. All Rights Reserved.', ar: 'مؤسسة عجلة التميز. كل الحقوق محفوظة.' },
     whoWeAre: { en: 'Who We Are', ar: 'من نحن' },
@@ -718,6 +932,9 @@ function App() {
     formEmail: { en: 'Email', ar: 'البريد الإلكتروني' },
     formMessage: { en: 'Message', ar: 'الرسالة' },
     formSend: { en: 'Send Message', ar: 'إرسال الرسالة' },
+    formSuccess: { en: 'Thank you! Your message has been sent successfully.', ar: 'شكراً لك! تم إرسال رسالتك بنجاح.' },
+    formErrorRequired: { en: 'This field is required.', ar: 'هذا الحقل مطلوب.' },
+    formErrorInvalidEmail: { en: 'Please enter a valid email address.', ar: 'الرجاء إدخال بريد إلكتروني صالح.' },
     productFeatures: {en: "Features & Specifications", ar: "الميزات والمواصفات"},
     productOrigin: {en: "Country of Origin", ar: "بلد الصنع"},
     productContact: {en: "Contact for Price", ar: "تواصل لمعرفة السعر"},
@@ -853,6 +1070,7 @@ function App() {
       </main>
       <Footer lang={lang} setLang={setLang} setCurrentPage={setCurrentPage} translations={translations}/>
       <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} lang={lang} translations={translations}/>
+      <ScrollToTopButton lang={lang} />
     </>
   );
 }

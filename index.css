@@ -11,6 +11,8 @@
   --medium-gray: #dddddd;
   --dark-gray: #333333;
   --white: #ffffff;
+  --success-color: #28a745;
+  --error-color: #dc3545;
   --font-family-en: 'Montserrat', sans-serif;
   --font-family-ar: 'Tajawal', sans-serif;
   --header-height: 5rem; /* 80px */
@@ -20,6 +22,10 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 /* --- Accessibility: Focus Outline --- */
@@ -447,11 +453,18 @@ main {
     border-color: var(--secondary-color);
 }
 
-.cta-button:hover {
+.cta-button:hover:not(:disabled) {
     background-color: #b34700; /* Darker orange */
     border-color: #b34700;
     transform: translateY(-2px);
 }
+
+.cta-button:disabled {
+    background-color: var(--medium-gray);
+    border-color: var(--medium-gray);
+    cursor: not-allowed;
+}
+
 
 .cta-button-outline {
     background-color: transparent;
@@ -663,68 +676,152 @@ main {
     margin-bottom: 2.5rem; /* 40px */
 }
 
-.no-results-message {
+.no-results-container {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 4rem 1rem;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.no-results-container span {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.no-results-message {
     font-size: 1.2rem;
     color: #666;
+    font-weight: 500;
 }
 
 .product-card {
-    border: 1px solid var(--medium-gray);
-    border-radius: 0.5rem; /* 8px */
+    background-color: var(--white);
+    border-radius: 0.75rem; /* 12px */
     overflow: hidden;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    padding: 1.25rem; /* 20px */
     transition: box-shadow 0.3s, transform 0.3s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
 }
 .product-card:hover {
-    transform: translateY(-0.3125rem); /* -5px */
-    box-shadow: 0 0.625rem 1.25rem rgba(0,0,0,0.1); /* 10px 20px */
+    transform: translateY(-0.5rem); /* -8px */
+    box-shadow: 0 20px 25px rgba(0,0,0,0.08), 0 8px 10px rgba(0,0,0,0.08);
 }
+
+.product-card-info {
+    padding: 1.25rem; /* 20px */
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.rtl .product-card-info {
+    text-align: right;
+}
+
+.product-card-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.product-card-tags span {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.product-card-tags span.manufacturer {
+    background-color: #e2e8f0;
+}
+
+.product-card-tags span.category {
+    background-color: #feefc7;
+    color: #8d5d00;
+}
+
 
 /* New styles for Product Page Categories */
 .product-category-section {
     margin-bottom: 3.5rem; /* 56px */
+    padding: 2rem;
+    background-color: #f9fafb;
+    border-radius: 12px;
+}
+.product-category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--light-gray);
 }
 .product-category-title {
     font-size: 1.8rem; /* 28.8px */
     color: var(--primary-color);
-    margin-bottom: 1.5rem; /* 24px */
-    padding-bottom: 0.75rem; /* 12px */
-    border-bottom: 2px solid var(--light-gray);
     text-align: left;
 }
 .rtl .product-category-title {
     text-align: right;
 }
+.product-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    background-color: #e2e8f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+}
 
 .product-card-image {
-    height: 15.625rem; /* 250px */
-    margin-bottom: 0.9375rem; /* 15px */
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: var(--white);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .product-card-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+.product-card:hover .product-card-image img {
+    transform: scale(1.05);
 }
 
 .product-card h3 {
-    margin-bottom: 0.625rem; /* 10px */
+    margin-bottom: 0.5rem; /* 8px */
+    font-size: 1.2rem;
 }
 
 .product-card p {
     flex-grow: 1;
-    margin-bottom: 1.25rem; /* 20px */
+    margin-bottom: 1.5rem; /* 24px */
     color: #666;
     font-size: 0.9rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
+
+.product-card .cta-button-outline {
+    margin-top: auto; /* Push button to the bottom */
+    width: 100%;
+}
+
 
 /* Partners Grid */
 .partners-grid {
@@ -842,8 +939,12 @@ main {
 .contact-form form {
     display: flex;
     flex-direction: column;
-    gap: 0.9375rem; /* 15px */
+    gap: 0.25rem; /* 4px */
 }
+.contact-form .form-group {
+    margin-bottom: 0.9375rem; /* 15px */
+}
+
 .contact-form input, .contact-form textarea {
     width: 100%;
     padding: 0.75rem; /* 12px */
@@ -852,6 +953,24 @@ main {
     font-family: inherit;
     font-size: 1rem;
 }
+.contact-form input.error, .contact-form textarea.error {
+    border-color: var(--error-color);
+}
+.error-message {
+    color: var(--error-color);
+    font-size: 0.8rem;
+    padding-top: 0.25rem;
+}
+
+.form-success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+}
+
 .contact-info p {
     margin-bottom: 0.9375rem; /* 15px */
 }
@@ -1137,6 +1256,41 @@ footer h3 {
     width: 100%;
     text-align: center;
     margin-top: 1.25rem; /* 20px */
+}
+
+/* --- Scroll to Top Button --- */
+.scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1rem);
+    transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.rtl .scroll-to-top {
+    right: auto;
+    left: 2rem;
 }
 
 /* Icons (Simple CSS icons) */
