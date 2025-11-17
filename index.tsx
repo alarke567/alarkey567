@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -14,7 +15,8 @@ interface Slide {
   subtitle: LocalizedString;
 }
 
-interface Produt {
+// FIX: Renamed interface from Produt to Product to match usage throughout the component.
+interface Product {
   id: string;
   name: LocalizedString;
   image: string;
@@ -772,6 +774,8 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [errors, setErrors] = useState({ name: '', email: '', message: '' });
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     const validate = () => {
         const newErrors = { name: '', email: '', message: '' };
@@ -795,12 +799,43 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
         return isValid;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (validate()) {
-            console.log("Form submitted:", formData);
-            setIsSubmitted(true);
-            setFormData({ name: '', email: '', message: '' });
+        setSubmitError(null);
+        if (!validate()) {
+            return;
+        }
+        setIsSubmitting(true);
+        // This is a public test endpoint from Formspree. It will show a success message but not send an email.
+        // To receive emails at customer@woe.sa, create a new form on formspree.io,
+        // point it to your email address, and replace the URL below with your new form's URL.
+        try {
+            const response = await fetch('https://formspree.io/f/xeqyqdrj', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                setIsSubmitted(true);
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                const data = await response.json();
+                // FIX: Replaced Object.hasOwn with Object.prototype.hasOwnProperty.call for better browser compatibility.
+                if (Object.prototype.hasOwnProperty.call(data, 'errors')) {
+                    setSubmitError(data["errors"].map((error: any) => error["message"]).join(", "));
+                } else {
+                    setSubmitError(translations.formErrorGeneric[lang]);
+                }
+            }
+        } catch (error) {
+            console.error("Form submission error:", error);
+            setSubmitError(translations.formErrorGeneric[lang]);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -849,7 +884,10 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
                                 <textarea id="message" name="message" rows={5} value={formData.message} onChange={handleChange} className={errors.message ? 'error' : ''} required></textarea>
                                 {errors.message && <p className="error-message">{errors.message}</p>}
                             </div>
-                            <button type="submit" className="cta-button"><T content={translations.formSubmit} lang={lang} /></button>
+                            <button type="submit" className="cta-button" disabled={isSubmitting}>
+                                {isSubmitting ? <T content={translations.formSubmitting} lang={lang} /> : <T content={translations.formSubmit} lang={lang} />}
+                            </button>
+                            {submitError && <p className="error-message submit-error">{submitError}</p>}
                         </form>
                     )}
                 </div>
@@ -923,11 +961,13 @@ const App = () => {
     formEmail: { en: 'Your Email', ar: 'البريد الإلكتروني' },
     formMessage: { en: 'Your Message', ar: 'رسالتك' },
     formSubmit: { en: 'Send Message', ar: 'إرسال' },
+    formSubmitting: { en: 'Sending...', ar: 'جار الإرسال...' },
     formErrorName: { en: 'Name is required.', ar: 'الاسم مطلوب.' },
     formErrorEmail: { en: 'Email is required.', ar: 'البريد الإلكتروني مطلوب.' },
     formErrorEmailInvalid: { en: 'Please enter a valid email.', ar: 'الرجاء إدخال بريد إلكتروني صالح.' },
     formErrorMessage: { en: 'Message is required.', ar: 'الرسالة مطلوبة.' },
-    formSuccess: { en: 'Thank you for your message! We will get back to you soon.', ar: 'شكراً لرسالتك! سوف نتصل بك قريبا.' },
+    formErrorGeneric: { en: 'An error occurred while sending your message. Please try again later.', ar: 'حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى لاحقاً.' },
+    formSuccess: { en: 'Thank you for contacting us! We will get back to you soon.', ar: 'شكرا للتواصل معنا سيتم الرد معك في اقرب وقت' },
     // Footer
     footerSlogan: { en: 'Advanced solutions for a better life.', ar: 'حلول متقدمة لحياة أفضل.' },
     footerLinks: { en: 'Quick Links', ar: 'روابط سريعة' },
