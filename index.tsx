@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
@@ -15,7 +13,6 @@ interface Slide {
   subtitle: LocalizedString;
 }
 
-// FIX: Renamed interface from Produt to Product to match usage throughout the component.
 interface Product {
   id: string;
   name: LocalizedString;
@@ -58,7 +55,6 @@ interface AppData {
 }
 
 type Language = 'en' | 'ar';
-type Page = 'home' | 'about' | 'products' | 'services' | 'faq' | 'contact';
 
 // --- Custom Hooks ---
 const useDebounce = (value: string, delay: number) => {
@@ -77,7 +73,6 @@ const useDebounce = (value: string, delay: number) => {
     return debouncedValue;
 };
 
-
 // --- Helper Components ---
 const T: React.FC<{ content: LocalizedString; lang: Language; args?: Record<string, string | number> }> = ({ content, lang, args }) => {
   let text = content[lang] || '';
@@ -95,12 +90,10 @@ const T: React.FC<{ content: LocalizedString; lang: Language; args?: Record<stri
 const Header: React.FC<{
   lang: Language;
   setLang: (lang: Language) => void;
-  currentPage: Page;
-  setCurrentPage: (page: Page) => void;
-  setInitialProductFilter: (filter: { key: string }) => void;
   translations: any;
-  onNavigateHome: () => void;
-}> = ({ lang, setLang, currentPage, setCurrentPage, setInitialProductFilter, translations, onNavigateHome }) => {
+  currentView: string;
+  navigateTo: (view: string, productId?: string | null, category?: string) => void;
+}> = ({ lang, setLang, translations, currentView, navigateTo }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -123,16 +116,16 @@ const Header: React.FC<{
     };
   }, [isMenuOpen]);
 
-  const navLinks: { page: Page; label: LocalizedString }[] = [
-    { page: 'home', label: translations.navHome },
-    { page: 'about', label: translations.navAbout },
-    { page: 'products', label: translations.navProducts },
-    { page: 'services', label: translations.navServices },
-    { page: 'faq', label: translations.navFAQ },
-    { page: 'contact', label: translations.navContact },
+  const navLinks = [
+    { id: 'home', label: translations.navHome },
+    { id: 'about', label: translations.navAbout },
+    { id: 'products', label: translations.navProducts, isProduct: true },
+    { id: 'services', label: translations.navServices },
+    { id: 'faq', label: translations.navFAQ },
+    { id: 'contact', label: translations.navContact },
   ];
 
-  const productCategories: { key: string; translationKey: keyof typeof translations }[] = [
+  const productCategories = [
       { key: 'sport-lightweight', translationKey: 'categorySportLightweight' },
       { key: 'lightweight', translationKey: 'categoryLightweight' },
       { key: 'electric', translationKey: 'categoryElectric' },
@@ -142,22 +135,25 @@ const Header: React.FC<{
       { key: 'accessories', translationKey: 'categoryAccessories' },
   ];
   
-  const handleNavClick = (page: Page, filter?: {key: string}) => {
-      onNavigateHome(); // This will clear any selected product
-      setCurrentPage(page);
-      if(filter) {
-        setInitialProductFilter(filter);
-      } else if (page === 'products') {
-        setInitialProductFilter({ key: 'all' });
-      }
-      setIsMenuOpen(false);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  const handleNavClick = (e: React.MouseEvent, viewId: string) => {
+    e.preventDefault();
+    navigateTo(viewId);
+    closeMenu();
+  };
+
+  const handleCategoryClick = (e: React.MouseEvent, categoryKey: string) => {
+      e.preventDefault();
+      navigateTo('products', null, categoryKey);
+      closeMenu();
   }
 
   return (
     <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
         <div className="logo-area">
-            <a href="#" onClick={(e) => { e.preventDefault(); handleNavClick('home'); }} className="logo" aria-label={translations.ariaHomepage[lang]}>
+            <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="logo" aria-label={translations.ariaHomepage[lang]}>
               <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
             </a>
             <button
@@ -172,26 +168,23 @@ const Header: React.FC<{
         <nav className={isMenuOpen ? 'open' : ''}>
           <ul>
             {navLinks.map((link) => (
-              <li key={link.page} className={link.page === 'products' ? 'has-dropdown' : ''}>
+              <li key={link.id} className={link.isProduct ? 'has-dropdown' : ''}>
                 <a
-                  href={`#${link.page === 'home' ? '' : link.page}`}
-                  className={currentPage === link.page ? 'active' : ''}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(link.page);
-                  }}
+                  href="#"
+                  className={currentView === link.id ? 'active' : ''}
+                  onClick={(e) => handleNavClick(e, link.id)}
                 >
                   <T content={link.label} lang={lang} />
-                  {link.page === 'products' && <span className="chevron"></span>}
+                  {link.isProduct && <span className="chevron"></span>}
                 </a>
-                {link.page === 'products' && (
+                {link.isProduct && (
                   <ul className="dropdown-menu">
                     {productCategories.map(category => (
                         <li key={category.key}>
-                            <a href="#products" onClick={(e) => {
-                                e.preventDefault();
-                                handleNavClick('products', {key: category.key});
-                            }}>
+                            <a 
+                                href="#"
+                                onClick={(e) => handleCategoryClick(e, category.key)}
+                            >
                                 <T content={translations[category.translationKey]} lang={lang} />
                             </a>
                         </li>
@@ -220,22 +213,27 @@ const Header: React.FC<{
   );
 };
 
-const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setCurrentPage: (page: Page) => void, onNavigateHome: () => void, translations: any }> = ({ lang, setLang, setCurrentPage, onNavigateHome, translations }) => {
+const Footer: React.FC<{ 
+    lang: Language, 
+    setLang: (lang: Language) => void, 
+    translations: any,
+    navigateTo: (view: string) => void
+}> = ({ lang, setLang, translations, navigateTo }) => {
     
-  const topNavLinks: { page: Page; label: LocalizedString }[] = [
-    { page: 'home', label: translations.navHome },
-    { page: 'about', label: translations.navAbout },
-    { page: 'products', label: translations.navProducts },
-    { page: 'services', label: translations.navServices },
-    { page: 'faq', label: translations.navFAQ },
-    { page: 'contact', label: translations.navContact },
+  const topNavLinks = [
+    { id: 'home', label: translations.navHome },
+    { id: 'about', label: translations.navAbout },
+    { id: 'products', label: translations.navProducts },
+    { id: 'services', label: translations.navServices },
+    { id: 'faq', label: translations.navFAQ },
+    { id: 'contact', label: translations.navContact },
   ];
-  
-  const handleNavClick = (page: Page) => {
-      onNavigateHome();
-      setCurrentPage(page);
-  }
 
+  const handleLinkClick = (e: React.MouseEvent, viewId: string) => {
+      e.preventDefault();
+      navigateTo(viewId);
+  }
+  
   return (
     <footer className={lang === 'ar' ? 'rtl' : ''}>
         <div className="container">
@@ -243,14 +241,8 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                  <nav className="footer-nav">
                     <ul>
                         {topNavLinks.map((link) => (
-                          <li key={link.page}>
-                            <a
-                              href={`#${link.page === 'home' ? '' : link.page}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleNavClick(link.page);
-                              }}
-                            >
+                          <li key={link.id}>
+                            <a href="#" onClick={(e) => handleLinkClick(e, link.id)}>
                               <T content={link.label} lang={lang} />
                             </a>
                           </li>
@@ -273,10 +265,10 @@ const Footer: React.FC<{ lang: Language, setLang: (lang: Language) => void, setC
                 <div className="footer-col">
                     <h3><T content={translations.footerLinks} lang={lang} /></h3>
                     <ul>
-                        <li><a href="#about" onClick={(e)=>{e.preventDefault(); handleNavClick('about')}}><T content={translations.navAbout} lang={lang} /></a></li>
-                        <li><a href="#products" onClick={(e)=>{e.preventDefault(); handleNavClick('products')}}><T content={translations.navProducts} lang={lang} /></a></li>
-                        <li><a href="#services" onClick={(e)=>{e.preventDefault(); handleNavClick('services')}}><T content={translations.navServices} lang={lang} /></a></li>
-                        <li><a href="#faq" onClick={(e)=>{e.preventDefault(); handleNavClick('faq')}}><T content={translations.navFAQ} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'about')}><T content={translations.navAbout} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'products')}><T content={translations.navProducts} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'services')}><T content={translations.navServices} lang={lang} /></a></li>
+                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'faq')}><T content={translations.navFAQ} lang={lang} /></a></li>
                     </ul>
                 </div>
                 <div className="footer-col">
@@ -342,7 +334,12 @@ const ScrollToTopButton: React.FC<{ translations: any; lang: Language }> = ({ tr
 
 
 // --- Pages ---
-const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page: Page) => void, setSelectedProduct: (p: Product) => void, translations: any }> = ({ data, lang, setCurrentPage, setSelectedProduct, translations }) => {
+const HomePage: React.FC<{ 
+    data: AppData; 
+    lang: Language; 
+    translations: any;
+    navigateTo: (view: string, productId?: string) => void;
+}> = ({ data, lang, translations, navigateTo }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -368,7 +365,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
             <div className="hero-content">
               <h1><T content={slide.title} lang={lang} /></h1>
               <p><T content={slide.subtitle} lang={lang} /></p>
-              <button onClick={() => setCurrentPage('products')} className="cta-button">
+              <button onClick={() => navigateTo('products')} className="cta-button">
                 <T content={translations.heroButton} lang={lang} />
               </button>
             </div>
@@ -395,7 +392,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
               <div className="home-about-content">
                   <div className="home-about-text">
                       <p><T content={translations.homeAboutText} lang={lang} /></p>
-                      <button onClick={() => setCurrentPage('about')} className="cta-button"><T content={translations.homeAboutButton} lang={lang} /></button>
+                      <button onClick={() => navigateTo('about')} className="cta-button"><T content={translations.homeAboutButton} lang={lang} /></button>
                   </div>
                   <div className="home-about-image">
                       <img src="https://i.imgur.com/xApFqZi.jpeg" alt={translations.homeAboutImageAlt[lang]} loading="lazy" />
@@ -412,7 +409,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
           <p className="section-subtitle"><T content={translations.homeProductsSubtitle} lang={lang} /></p>
           <div className="product-grid">
             {featuredProducts.map(product => (
-              <div className="product-card" key={product.id} onClick={() => setSelectedProduct(product)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setSelectedProduct(product)}>
+              <div onClick={() => navigateTo('product-detail', product.id)} className="product-card" key={product.id}>
                 <div className="product-card-image">
                     <img src={product.image} alt={product.name[lang]} loading="lazy" />
                 </div>
@@ -430,7 +427,7 @@ const HomePage: React.FC<{ data: AppData; lang: Language; setCurrentPage: (page:
               </div>
             ))}
           </div>
-           <button onClick={() => setCurrentPage('products')} className="cta-button"><T content={translations.homeProductsButton} lang={lang} /></button>
+           <button onClick={() => navigateTo('products')} className="cta-button" style={{marginTop: '30px'}}><T content={translations.homeProductsButton} lang={lang} /></button>
         </div>
       </section>
 
@@ -489,12 +486,22 @@ const AboutPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tran
     </div>
 );
 
-const ProductsPage: React.FC<{ products: Product[], lang: Language, setSelectedProduct: (p: Product) => void, initialFilter: { key: string }, translations: any }> = ({ products, lang, setSelectedProduct, initialFilter, translations }) => {
-    const [activeCategory, setActiveCategory] = useState(initialFilter.key);
+const ProductsPage: React.FC<{ 
+    products: Product[]; 
+    lang: Language; 
+    translations: any; 
+    initialCategory: string;
+    navigateTo: (view: string, productId?: string) => void;
+}> = ({ products, lang, translations, initialCategory, navigateTo }) => {
+    const [activeCategory, setActiveCategory] = useState(initialCategory || 'all');
     const [searchTerm, setSearchTerm] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [sortOrder, setSortOrder] = useState('default');
     const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+    useEffect(() => {
+        setActiveCategory(initialCategory);
+    }, [initialCategory]);
 
     const categories = {
         'all': { label: translations.categoryAll },
@@ -507,10 +514,6 @@ const ProductsPage: React.FC<{ products: Product[], lang: Language, setSelectedP
         'accessories': { label: translations.categoryAccessories },
     };
     
-    useEffect(() => {
-        setActiveCategory(initialFilter.key);
-    }, [initialFilter]);
-
     let filteredProducts = products.filter(product => {
         const matchesCategory = activeCategory === 'all' || product.mainCategory === activeCategory;
         
@@ -609,7 +612,7 @@ const ProductsPage: React.FC<{ products: Product[], lang: Language, setSelectedP
             {sortedProducts.length > 0 ? (
                 <div className={`product-${viewMode}`}>
                     {sortedProducts.map(product => (
-                      <div className="product-card" key={product.id} onClick={() => setSelectedProduct(product)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setSelectedProduct(product)}>
+                      <div onClick={() => navigateTo('product-detail', product.id)} className="product-card" key={product.id}>
                           <div className="product-card-image">
                               <img src={product.image} alt={product.name[lang]} loading="lazy" />
                           </div>
@@ -639,13 +642,28 @@ const ProductsPage: React.FC<{ products: Product[], lang: Language, setSelectedP
     );
 };
 
-const ProductDetailPage: React.FC<{ product: Product; lang: Language; translations: any; onBack: () => void; onSelectProduct: (p: Product) => void; allProducts: Product[] }> = ({ product, lang, translations, onBack, onSelectProduct, allProducts }) => {
+const ProductDetailPage: React.FC<{ 
+    lang: Language; 
+    translations: any; 
+    allProducts: Product[];
+    productId: string | null;
+    navigateTo: (view: string, productId?: string) => void;
+}> = ({ lang, translations, allProducts, productId, navigateTo }) => {
+    const product = allProducts.find(p => p.id === productId);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
         setCurrentImageIndex(0);
-        window.scrollTo(0, 0);
     }, [product]);
+
+    if (!product) {
+        return (
+            <div className="page-container container" style={{textAlign: 'center', padding: '5rem 0'}}>
+                 <h2>Product not found</h2>
+                 <button onClick={() => navigateTo('products')} className="cta-button">Back to Products</button>
+            </div>
+        );
+    }
 
     const allImages = [product.image, ...(product.otherImages || [])];
     const relatedProducts = allProducts.filter(p => p.mainCategory === product.mainCategory && p.id !== product.id).slice(0, 4);
@@ -653,7 +671,7 @@ const ProductDetailPage: React.FC<{ product: Product; lang: Language; translatio
     return (
         <div className="page-container container product-detail-page">
             <div className="breadcrumbs">
-                <button onClick={onBack}><T content={translations.navProducts} lang={lang}/></button> / <span><T content={product.name} lang={lang}/></span>
+                <button onClick={() => navigateTo('products')}><T content={translations.navProducts} lang={lang}/></button> / <span><T content={product.name} lang={lang}/></span>
             </div>
             <div className="product-detail-layout">
                 <div className="product-gallery">
@@ -702,7 +720,7 @@ const ProductDetailPage: React.FC<{ product: Product; lang: Language; translatio
                     <h2><T content={translations.relatedProducts} lang={lang}/></h2>
                     <div className="product-grid">
                         {relatedProducts.map(p => (
-                            <div className="product-card" key={p.id} onClick={() => onSelectProduct(p)} role="button" tabIndex={0} onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onSelectProduct(p)}>
+                            <div onClick={() => navigateTo('product-detail', p.id)} className="product-card" key={p.id}>
                                 <div className="product-card-image">
                                     <img src={p.image} alt={p.name[lang]} loading="lazy" />
                                 </div>
@@ -806,9 +824,6 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
             return;
         }
         setIsSubmitting(true);
-        // This is a public test endpoint from Formspree. It will show a success message but not send an email.
-        // To receive emails at customer@woe.sa, create a new form on formspree.io,
-        // point it to your email address, and replace the URL below with your new form's URL.
         try {
             const response = await fetch('https://formspree.io/f/xeqyqdrj', {
                 method: 'POST',
@@ -824,7 +839,6 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
                 setFormData({ name: '', email: '', message: '' });
             } else {
                 const data = await response.json();
-                // FIX: Replaced Object.hasOwn with Object.prototype.hasOwnProperty.call for better browser compatibility.
                 if (Object.prototype.hasOwnProperty.call(data, 'errors')) {
                     setSubmitError(data["errors"].map((error: any) => error["message"]).join(", "));
                 } else {
@@ -900,11 +914,11 @@ const ContactPage: React.FC<{ lang: Language, translations: any }> = ({ lang, tr
 // --- Main App Component ---
 const App = () => {
   const [lang, setLang] = useState<Language>('ar');
-  const [currentPage, setCurrentPage] = useState<Page>('home');
   const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [initialProductFilter, setInitialProductFilter] = useState({ key: 'all' });
+  const [currentView, setCurrentView] = useState('home');
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [productCategory, setProductCategory] = useState<string>('all');
 
   const translations = {
     // Nav & General
@@ -976,7 +990,7 @@ const App = () => {
     // Categories
     categoryAll: { en: 'All Categories', ar: 'جميع الأقسام' },
     categoryFeatured: { en: 'Featured', ar: 'المميزة' },
-    categorySportLightweight: { en: 'Heavy Duty', ar: 'كراسي شديدة التحمل' },
+    categorySportLightweight: { en: 'Ultralight Wheelchairs', ar: 'كراسي متحركة فائقة الخفة' },
     categoryLightweight: { en: 'Lightweight', ar: 'كراسي خفيفة الوزن' },
     categoryElectric: { en: 'Electric Wheelchairs', ar: 'كراسي متحركة كهربائية' },
     categoryChildren: { en: 'Children\'s Wheelchairs', ar: 'كراسي أطفال' },
@@ -1052,66 +1066,62 @@ const App = () => {
     document.body.className = lang === 'ar' ? 'rtl' : '';
   }, [lang]);
   
-  useEffect(() => {
-    if(!selectedProduct) {
-        window.scrollTo(0, 0);
-    }
-  }, [currentPage, selectedProduct]);
+  const navigateTo = useCallback((view: string, productId: string | null = null, category: string = 'all') => {
+      setCurrentView(view);
+      if (productId) setSelectedProductId(productId);
+      if (category !== 'all') setProductCategory(category); 
+      // Reset category to 'all' if navigating to products without a specific category, 
+      // unless we want to persist it. For now, let's respect the passed category.
+      // If user clicks "Products" in nav, we probably want all products.
+      if (view === 'products' && category === 'all') {
+          setProductCategory('all');
+      }
 
-  const renderPage = () => {
-    if (!data) return null;
-    if (selectedProduct) {
-        return <ProductDetailPage 
-                    product={selectedProduct} 
-                    lang={lang} 
-                    translations={translations}
-                    onBack={() => setSelectedProduct(null)}
-                    onSelectProduct={setSelectedProduct}
-                    allProducts={data.products}
-                />;
-    }
-    switch(currentPage) {
-        case 'home':
-            return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
-        case 'about':
-            return <AboutPage lang={lang} translations={translations} />;
-        case 'products':
-            return <ProductsPage products={data.products} lang={lang} setSelectedProduct={setSelectedProduct} initialFilter={initialProductFilter} translations={translations} />;
-        case 'services':
-            return <ServicesPage services={data.services} lang={lang} translations={translations} />;
-        case 'faq':
-            return <FAQPage faqs={data.faq} lang={lang} translations={translations} />;
-        case 'contact':
-            return <ContactPage lang={lang} translations={translations} />;
-        default:
-            return <HomePage data={data} lang={lang} setCurrentPage={setCurrentPage} setSelectedProduct={setSelectedProduct} translations={translations} />;
-    }
-  };
+      window.scrollTo(0, 0);
+  }, []);
 
-  if (loading) {
+  if (loading || !data) {
     return null; 
   }
+
+  const renderContent = () => {
+      switch (currentView) {
+          case 'home':
+              return <HomePage data={data} lang={lang} translations={translations} navigateTo={navigateTo} />;
+          case 'about':
+              return <AboutPage lang={lang} translations={translations} />;
+          case 'products':
+              return <ProductsPage products={data.products} lang={lang} translations={translations} initialCategory={productCategory} navigateTo={navigateTo} />;
+          case 'product-detail':
+              return <ProductDetailPage lang={lang} translations={translations} allProducts={data.products} productId={selectedProductId} navigateTo={navigateTo} />;
+          case 'services':
+              return <ServicesPage services={data.services} lang={lang} translations={translations} />;
+          case 'faq':
+              return <FAQPage faqs={data.faq} lang={lang} translations={translations} />;
+          case 'contact':
+              return <ContactPage lang={lang} translations={translations} />;
+          default:
+              return <HomePage data={data} lang={lang} translations={translations} navigateTo={navigateTo} />;
+      }
+  };
 
   return (
     <>
       <Header
         lang={lang}
         setLang={setLang}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        setInitialProductFilter={setInitialProductFilter}
         translations={translations}
-        onNavigateHome={() => setSelectedProduct(null)}
+        currentView={currentView}
+        navigateTo={navigateTo}
       />
       <main>
-        {renderPage()}
+        {renderContent()}
       </main>
       <Footer
         lang={lang}
         setLang={setLang}
-        setCurrentPage={setCurrentPage}
-        onNavigateHome={() => setSelectedProduct(null)}
         translations={translations}
+        navigateTo={navigateTo}
       />
       <ScrollToTopButton translations={translations} lang={lang} />
     </>
