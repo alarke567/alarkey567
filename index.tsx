@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
+import { HashRouter, Routes, Route, Link, NavLink, useParams, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 
 // --- Data Types ---
 interface LocalizedString {
@@ -85,17 +86,27 @@ const T: React.FC<{ content: LocalizedString; lang: Language; args?: Record<stri
   return <>{text}</>;
 };
 
+// ScrollToTop Component for Router
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  
+  return null;
+};
+
 // --- App Components ---
 
 const Header: React.FC<{
   lang: Language;
   setLang: (lang: Language) => void;
   translations: any;
-  currentView: string;
-  navigateTo: (view: string, productId?: string | null, category?: string) => void;
-}> = ({ lang, setLang, translations, currentView, navigateTo }) => {
+}> = ({ lang, setLang, translations }) => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,12 +128,12 @@ const Header: React.FC<{
   }, [isMenuOpen]);
 
   const navLinks = [
-    { id: 'home', label: translations.navHome },
-    { id: 'about', label: translations.navAbout },
-    { id: 'products', label: translations.navProducts, isProduct: true },
-    { id: 'services', label: translations.navServices },
-    { id: 'faq', label: translations.navFAQ },
-    { id: 'contact', label: translations.navContact },
+    { path: '/', label: translations.navHome, end: true },
+    { path: '/about', label: translations.navAbout },
+    { path: '/products', label: translations.navProducts, isProduct: true },
+    { path: '/services', label: translations.navServices },
+    { path: '/faq', label: translations.navFAQ },
+    { path: '/contact', label: translations.navContact },
   ];
 
   const productCategories = [
@@ -137,25 +148,13 @@ const Header: React.FC<{
   
   const closeMenu = () => setIsMenuOpen(false);
 
-  const handleNavClick = (e: React.MouseEvent, viewId: string) => {
-    e.preventDefault();
-    navigateTo(viewId);
-    closeMenu();
-  };
-
-  const handleCategoryClick = (e: React.MouseEvent, categoryKey: string) => {
-      e.preventDefault();
-      navigateTo('products', null, categoryKey);
-      closeMenu();
-  }
-
   return (
     <header className={`${scrolled ? 'scrolled' : ''} ${lang === 'ar' ? 'rtl' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="container">
         <div className="logo-area">
-            <a href="#" onClick={(e) => handleNavClick(e, 'home')} className="logo" aria-label={translations.ariaHomepage[lang]}>
+            <Link to="/" onClick={closeMenu} className="logo" aria-label={translations.ariaHomepage[lang]}>
               <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" />
-            </a>
+            </Link>
             <button
               className="lang-switcher"
               onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
@@ -168,25 +167,26 @@ const Header: React.FC<{
         <nav className={isMenuOpen ? 'open' : ''}>
           <ul>
             {navLinks.map((link) => (
-              <li key={link.id} className={link.isProduct ? 'has-dropdown' : ''}>
-                <a
-                  href="#"
-                  className={currentView === link.id ? 'active' : ''}
-                  onClick={(e) => handleNavClick(e, link.id)}
+              <li key={link.path} className={link.isProduct ? 'has-dropdown' : ''}>
+                <NavLink
+                  to={link.path}
+                  end={link.end}
+                  className={({ isActive }) => isActive || (link.isProduct && location.pathname.includes('/products')) ? 'active' : ''}
+                  onClick={closeMenu}
                 >
                   <T content={link.label} lang={lang} />
                   {link.isProduct && <span className="chevron"></span>}
-                </a>
+                </NavLink>
                 {link.isProduct && (
                   <ul className="dropdown-menu">
                     {productCategories.map(category => (
                         <li key={category.key}>
-                            <a 
-                                href="#"
-                                onClick={(e) => handleCategoryClick(e, category.key)}
+                            <Link 
+                                to={`/products?category=${category.key}`}
+                                onClick={closeMenu}
                             >
                                 <T content={translations[category.translationKey]} lang={lang} />
-                            </a>
+                            </Link>
                         </li>
                     ))}
                   </ul>
@@ -216,23 +216,17 @@ const Header: React.FC<{
 const Footer: React.FC<{ 
     lang: Language, 
     setLang: (lang: Language) => void, 
-    translations: any,
-    navigateTo: (view: string) => void
-}> = ({ lang, setLang, translations, navigateTo }) => {
+    translations: any
+}> = ({ lang, setLang, translations }) => {
     
   const topNavLinks = [
-    { id: 'home', label: translations.navHome },
-    { id: 'about', label: translations.navAbout },
-    { id: 'products', label: translations.navProducts },
-    { id: 'services', label: translations.navServices },
-    { id: 'faq', label: translations.navFAQ },
-    { id: 'contact', label: translations.navContact },
+    { path: '/', label: translations.navHome },
+    { path: '/about', label: translations.navAbout },
+    { path: '/products', label: translations.navProducts },
+    { path: '/services', label: translations.navServices },
+    { path: '/faq', label: translations.navFAQ },
+    { path: '/contact', label: translations.navContact },
   ];
-
-  const handleLinkClick = (e: React.MouseEvent, viewId: string) => {
-      e.preventDefault();
-      navigateTo(viewId);
-  }
   
   return (
     <footer className={lang === 'ar' ? 'rtl' : ''}>
@@ -241,10 +235,10 @@ const Footer: React.FC<{
                  <nav className="footer-nav">
                     <ul>
                         {topNavLinks.map((link) => (
-                          <li key={link.id}>
-                            <a href="#" onClick={(e) => handleLinkClick(e, link.id)}>
+                          <li key={link.path}>
+                            <Link to={link.path}>
                               <T content={link.label} lang={lang} />
-                            </a>
+                            </Link>
                           </li>
                         ))}
                     </ul>
@@ -265,10 +259,10 @@ const Footer: React.FC<{
                 <div className="footer-col">
                     <h3><T content={translations.footerLinks} lang={lang} /></h3>
                     <ul>
-                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'about')}><T content={translations.navAbout} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'products')}><T content={translations.navProducts} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'services')}><T content={translations.navServices} lang={lang} /></a></li>
-                        <li><a href="#" onClick={(e) => handleLinkClick(e, 'faq')}><T content={translations.navFAQ} lang={lang} /></a></li>
+                        <li><Link to="/about"><T content={translations.navAbout} lang={lang} /></Link></li>
+                        <li><Link to="/products"><T content={translations.navProducts} lang={lang} /></Link></li>
+                        <li><Link to="/services"><T content={translations.navServices} lang={lang} /></Link></li>
+                        <li><Link to="/faq"><T content={translations.navFAQ} lang={lang} /></Link></li>
                     </ul>
                 </div>
                 <div className="footer-col">
@@ -347,9 +341,9 @@ const HomePage: React.FC<{
     data: AppData; 
     lang: Language; 
     translations: any;
-    navigateTo: (view: string, productId?: string) => void;
-}> = ({ data, lang, translations, navigateTo }) => {
+}> = ({ data, lang, translations }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -374,9 +368,9 @@ const HomePage: React.FC<{
             <div className="hero-content">
               <h1><T content={slide.title} lang={lang} /></h1>
               <p><T content={slide.subtitle} lang={lang} /></p>
-              <button onClick={() => navigateTo('products')} className="cta-button">
+              <Link to="/products" className="cta-button">
                 <T content={translations.heroButton} lang={lang} />
-              </button>
+              </Link>
             </div>
           </div>
         ))}
@@ -401,7 +395,7 @@ const HomePage: React.FC<{
               <div className="home-about-content">
                   <div className="home-about-text">
                       <p><T content={translations.homeAboutText} lang={lang} /></p>
-                      <button onClick={() => navigateTo('about')} className="cta-button"><T content={translations.homeAboutButton} lang={lang} /></button>
+                      <Link to="/about" className="cta-button"><T content={translations.homeAboutButton} lang={lang} /></Link>
                   </div>
                   <div className="home-about-image">
                       <img src="https://i.imgur.com/xApFqZi.jpeg" alt={translations.homeAboutImageAlt[lang]} loading="lazy" />
@@ -418,7 +412,7 @@ const HomePage: React.FC<{
           <p className="section-subtitle"><T content={translations.homeProductsSubtitle} lang={lang} /></p>
           <div className="product-grid">
             {featuredProducts.map(product => (
-              <div onClick={() => navigateTo('product-detail', product.id)} className="product-card" key={product.id}>
+              <div onClick={() => navigate(`/products/${product.id}`)} className="product-card" key={product.id}>
                 <div className="product-card-image">
                     <img src={product.image} alt={product.name[lang]} loading="lazy" />
                 </div>
@@ -436,7 +430,7 @@ const HomePage: React.FC<{
               </div>
             ))}
           </div>
-           <button onClick={() => navigateTo('products')} className="cta-button" style={{marginTop: '30px'}}><T content={translations.homeProductsButton} lang={lang} /></button>
+           <Link to="/products" className="cta-button" style={{marginTop: '30px', display: 'inline-block'}}><T content={translations.homeProductsButton} lang={lang} /></Link>
         </div>
       </section>
 
@@ -499,18 +493,19 @@ const ProductsPage: React.FC<{
     products: Product[]; 
     lang: Language; 
     translations: any; 
-    initialCategory: string;
-    navigateTo: (view: string, productId?: string) => void;
-}> = ({ products, lang, translations, initialCategory, navigateTo }) => {
-    const [activeCategory, setActiveCategory] = useState(initialCategory || 'all');
+}> = ({ products, lang, translations }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const activeCategory = searchParams.get('category') || 'all';
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
     const [sortOrder, setSortOrder] = useState('default');
     const debouncedSearchTerm = useDebounce(searchTerm, 300);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        setActiveCategory(initialCategory);
-    }, [initialCategory]);
+    const setActiveCategory = (category: string) => {
+        setSearchParams(category === 'all' ? {} : { category });
+    };
 
     const categories = {
         'all': { label: translations.categoryAll },
@@ -621,7 +616,7 @@ const ProductsPage: React.FC<{
             {sortedProducts.length > 0 ? (
                 <div className={`product-${viewMode}`}>
                     {sortedProducts.map(product => (
-                      <div onClick={() => navigateTo('product-detail', product.id)} className="product-card" key={product.id}>
+                      <div onClick={() => navigate(`/products/${product.id}`)} className="product-card" key={product.id}>
                           <div className="product-card-image">
                               <img src={product.image} alt={product.name[lang]} loading="lazy" />
                           </div>
@@ -655,10 +650,10 @@ const ProductDetailPage: React.FC<{
     lang: Language; 
     translations: any; 
     allProducts: Product[];
-    productId: string | null;
-    navigateTo: (view: string, productId?: string) => void;
-}> = ({ lang, translations, allProducts, productId, navigateTo }) => {
-    const product = allProducts.find(p => p.id === productId);
+}> = ({ lang, translations, allProducts }) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const product = allProducts.find(p => p.id === id);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     useEffect(() => {
@@ -669,7 +664,7 @@ const ProductDetailPage: React.FC<{
         return (
             <div className="page-container container" style={{textAlign: 'center', padding: '5rem 0'}}>
                  <h2>Product not found</h2>
-                 <button onClick={() => navigateTo('products')} className="cta-button">Back to Products</button>
+                 <Link to="/products" className="cta-button">Back to Products</Link>
             </div>
         );
     }
@@ -680,7 +675,7 @@ const ProductDetailPage: React.FC<{
     return (
         <div className="page-container container product-detail-page">
             <div className="breadcrumbs">
-                <button onClick={() => navigateTo('products')}><T content={translations.navProducts} lang={lang}/></button> / <span><T content={product.name} lang={lang}/></span>
+                <Link to="/products"><T content={translations.navProducts} lang={lang}/></Link> / <span><T content={product.name} lang={lang}/></span>
             </div>
             <div className="product-detail-layout">
                 <div className="product-gallery">
@@ -729,7 +724,7 @@ const ProductDetailPage: React.FC<{
                     <h2><T content={translations.relatedProducts} lang={lang}/></h2>
                     <div className="product-grid">
                         {relatedProducts.map(p => (
-                            <div onClick={() => navigateTo('product-detail', p.id)} className="product-card" key={p.id}>
+                            <div onClick={() => navigate(`/products/${p.id}`)} className="product-card" key={p.id}>
                                 <div className="product-card-image">
                                     <img src={p.image} alt={p.name[lang]} loading="lazy" />
                                 </div>
@@ -925,9 +920,6 @@ const App = () => {
   const [lang, setLang] = useState<Language>('ar');
   const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [currentView, setCurrentView] = useState('home');
-  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
-  const [productCategory, setProductCategory] = useState<string>('all');
 
   const translations = {
     // Nav & General
@@ -1076,65 +1068,36 @@ const App = () => {
     document.body.className = lang === 'ar' ? 'rtl' : '';
   }, [lang]);
   
-  const navigateTo = useCallback((view: string, productId: string | null = null, category: string = 'all') => {
-      setCurrentView(view);
-      if (productId) setSelectedProductId(productId);
-      if (category !== 'all') setProductCategory(category); 
-      // Reset category to 'all' if navigating to products without a specific category, 
-      // unless we want to persist it. For now, let's respect the passed category.
-      // If user clicks "Products" in nav, we probably want all products.
-      if (view === 'products' && category === 'all') {
-          setProductCategory('all');
-      }
-
-      window.scrollTo(0, 0);
-  }, []);
-
   if (loading || !data) {
     return null; 
   }
 
-  const renderContent = () => {
-      switch (currentView) {
-          case 'home':
-              return <HomePage data={data} lang={lang} translations={translations} navigateTo={navigateTo} />;
-          case 'about':
-              return <AboutPage lang={lang} translations={translations} />;
-          case 'products':
-              return <ProductsPage products={data.products} lang={lang} translations={translations} initialCategory={productCategory} navigateTo={navigateTo} />;
-          case 'product-detail':
-              return <ProductDetailPage lang={lang} translations={translations} allProducts={data.products} productId={selectedProductId} navigateTo={navigateTo} />;
-          case 'services':
-              return <ServicesPage services={data.services} lang={lang} translations={translations} />;
-          case 'faq':
-              return <FAQPage faqs={data.faq} lang={lang} translations={translations} />;
-          case 'contact':
-              return <ContactPage lang={lang} translations={translations} />;
-          default:
-              return <HomePage data={data} lang={lang} translations={translations} navigateTo={navigateTo} />;
-      }
-  };
-
   return (
-    <>
-      <Header
-        lang={lang}
-        setLang={setLang}
-        translations={translations}
-        currentView={currentView}
-        navigateTo={navigateTo}
-      />
-      <main>
-        {renderContent()}
-      </main>
-      <Footer
-        lang={lang}
-        setLang={setLang}
-        translations={translations}
-        navigateTo={navigateTo}
-      />
-      <ScrollToTopButton translations={translations} lang={lang} />
-    </>
+    <HashRouter>
+        <ScrollToTop />
+        <Header
+            lang={lang}
+            setLang={setLang}
+            translations={translations}
+        />
+        <main>
+            <Routes>
+                <Route path="/" element={<HomePage data={data} lang={lang} translations={translations} />} />
+                <Route path="/about" element={<AboutPage lang={lang} translations={translations} />} />
+                <Route path="/products" element={<ProductsPage products={data.products} lang={lang} translations={translations} />} />
+                <Route path="/products/:id" element={<ProductDetailPage lang={lang} translations={translations} allProducts={data.products} />} />
+                <Route path="/services" element={<ServicesPage services={data.services} lang={lang} translations={translations} />} />
+                <Route path="/faq" element={<FAQPage faqs={data.faq} lang={lang} translations={translations} />} />
+                <Route path="/contact" element={<ContactPage lang={lang} translations={translations} />} />
+            </Routes>
+        </main>
+        <Footer
+            lang={lang}
+            setLang={setLang}
+            translations={translations}
+        />
+        <ScrollToTopButton translations={translations} lang={lang} />
+    </HashRouter>
   );
 };
 
