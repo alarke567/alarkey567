@@ -1236,6 +1236,11 @@ footer h3 {
     transition: background-color 0.3s;
     font-size: 1.1rem;
 }
+.social-icons svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: currentColor;
+}
 
 .social-icons a:hover {
     background-color: var(--secondary-color);
@@ -1442,9 +1447,6 @@ footer h3 {
 .icon-map::before { content: '📍'; }
 .icon-phone::before { content: '📞'; }
 .icon-email::before { content: '✉️'; }
-.icon-facebook::before { content: 'f'; font-weight: bold; }
-.icon-twitter::before { content: 't'; font-weight: bold; }
-.icon-instagram::before { content: 'i'; font-weight: bold; }
 .icon-tick::before { content: '✓'; }
 
 
