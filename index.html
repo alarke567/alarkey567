@@ -1,13 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QH1N5YGDLB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QH1N5YGDLB');
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale-1.0" />
-    <title>Wheel of Excellence | مؤسسة عجلة التميز</title>
-    <link rel="stylesheet" href="index.css" />
+    <title>Wheel of Excellence | مؤسسة عجلة التميز التجارية - كراسي متحركة ومستلزمات طبية</title>
+    <meta name="description" content="مؤسسة عجلة التميز التجارية بالرياض، متخصصون في الكراسي المتحركة والمستلزمات الطبية. للتواصل: +966505203532 | Customer@woe.sa" />
+    <meta name="keywords" content="عجلة التميز, كراسي متحركة, مستلزمات طبية الرياض, أجهزة طبية, كراسي كهربائية, أسرة طبية, ذوي الإعاقة, كبار السن, Wheel of Excellence, Medical Equipment Riyadh, +966505203532, Customer@woe.sa" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://woe.sa/" />
+    <meta property="og:title" content="Wheel of Excellence | مؤسسة عجلة التميز التجارية" />
+    <meta property="og:description" content="متخصصون في الكراسي المتحركة والمستلزمات الطبية. للتواصل: +966505203532 | Customer@woe.sa" />
+    <meta property="og:image" content="https://i.imgur.com/sUARy23.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Wheel of Excellence | مؤسسة عجلة التميز التجارية" />
+    <meta property="twitter:description" content="أفضل الحلول الطبية والكراسي المتحركة في الرياض. تواصل معنا: +966505203532" />
+    <meta property="twitter:image" content="https://i.imgur.com/sUARy23.png" />
+
+    <link rel="stylesheet" href="/index.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "مؤسسة عجلة التميز التجارية",
+      "alternateName": "Wheel of Excellence Trading Est.",
+      "image": "https://i.imgur.com/sUARy23.png",
+      "@id": "",
+      "url": "https://woe.sa/",
+      "telephone": "+966505203532",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "An Nahadhah",
+        "addressLocality": "Riyadh",
+        "addressCountry": "SA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 24.7136,
+        "longitude": 46.6753
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      }
+    }
+    </script>
 <script type="importmap">
 {
   "imports": {
@@ -16,7 +78,7 @@
     "react-dom": "https://esm.sh/react-dom@18.2.0",
     "react-dom/": "https://esm.sh/react-dom@18.2.0/",
     "react-router-dom": "https://esm.sh/react-router-dom@6.23.0?deps=react@18.2.0,react-dom@18.2.0",
-    "@google/genai": "https://esm.sh/@google/genai@0.1.1"
+    "@google/genai": "https://esm.sh/@google/genai"
   }
 }
 </script>
@@ -26,6 +88,6 @@
         <img src="https://i.imgur.com/sUARy23.png" alt="Wheel of Excellence Logo" loading="lazy" />
     </div>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>

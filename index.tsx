@@ -144,6 +144,16 @@ const Header: React.FC<{
       { key: 'standard', translationKey: 'categoryStandard' },
       { key: 'bathroom', translationKey: 'categoryBathroom' },
       { key: 'accessories', translationKey: 'categoryAccessories' },
+      { key: 'movable', translationKey: 'categoryMovable' },
+      { key: 'beds', translationKey: 'categoryMedicalBeds' },
+      { key: 'mattresses', translationKey: 'categoryMattresses' },
+      { key: 'walkers', translationKey: 'categoryWalkers' },
+      { key: 'diapers', translationKey: 'categoryDiapers' },
+      { key: 'cushions', translationKey: 'categoryCushions' },
+      { key: 'respiratory', translationKey: 'categoryRespiratory' },
+      { key: 'diagnostic', translationKey: 'categoryDiagnostic' },
+      { key: 'furniture', translationKey: 'categoryFurniture' },
+      { key: 'consumables', translationKey: 'categoryConsumables' },
   ];
   
   const closeMenu = () => setIsMenuOpen(false);
@@ -516,10 +526,33 @@ const ProductsPage: React.FC<{
         'electric': { label: translations.categoryElectric },
         'bathroom': { label: translations.categoryBathroom },
         'accessories': { label: translations.categoryAccessories },
+        'movable': { label: translations.categoryMovable },
+        'beds': { label: translations.categoryMedicalBeds },
+        'mattresses': { label: translations.categoryMattresses },
+        'walkers': { label: translations.categoryWalkers },
+        'diapers': { label: translations.categoryDiapers },
+        'cushions': { label: translations.categoryCushions },
+        'respiratory': { label: translations.categoryRespiratory },
+        'diagnostic': { label: translations.categoryDiagnostic },
+        'furniture': { label: translations.categoryFurniture },
+        'consumables': { label: translations.categoryConsumables },
     };
     
     let filteredProducts = products.filter(product => {
-        const matchesCategory = activeCategory === 'all' || product.mainCategory === activeCategory;
+        let productCategory = product.mainCategory;
+        
+        // Map existing data to new categories if necessary or handle existing logic
+        if (['sport-lightweight', 'lightweight', 'children'].includes(product.mainCategory) && activeCategory === 'movable') {
+            // Optionally group these under movable if desired, but user requested original categories.
+            // If 'movable' is selected, we might want to show all manual wheelchairs.
+            // For now, strict matching as per data.json.
+            // If product.mainCategory is one of the specific types, it won't match 'movable' unless we add logic.
+             if (activeCategory === 'movable' && ['sport-lightweight', 'lightweight', 'children', 'standard'].includes(product.mainCategory)) {
+                 return true;
+             }
+        }
+
+        const matchesCategory = activeCategory === 'all' || product.mainCategory === activeCategory || (activeCategory === 'movable' && ['sport-lightweight', 'lightweight', 'children', 'standard'].includes(product.mainCategory));
         
         const matchesSearch = debouncedSearchTerm.trim() === '' || 
             product.name.en.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
@@ -933,7 +966,7 @@ const App = () => {
     productViewDetails: { en: 'View Details', ar: 'عرض التفاصيل' },
     // Home Page
     homeAboutTitle: { en: 'Wheel of Excellence', ar: 'عجلة التميز' },
-    homeAboutText: { en: 'Wheel of Excellence Trading Est. is a leading Saudi company specializing in importing and distributing high-quality medical equipment and supplies for people with disabilities. We are committed to providing the latest global technologies to enhance the quality of life for our customers.', ar: 'مؤسسة عجلة التميز التجارية هي شركة سعودية رائدة متخصصة في استيراد وتوزيع الأجهزة والمستلزمات الطبية عالية الجودة للأشخاص ذوي الإعاقة. نلتزم بتوفير أحدث التقنيات العالمية لتعزيز جودة الحياة لعملائنا.'},
+    homeAboutText: { en: 'Wheel of Excellence Trading Est. is a leading Saudi company specializing in medical equipment for people with disabilities. Contact us: +966 505 203 532 | Customer@woe.sa', ar: 'مؤسسة عجلة التميز التجارية هي شركة سعودية رائدة متخصصة في الأجهزة والمستلزمات الطبية للأشخاص ذوي الإعاقة. للتواصل: 966505203532+ | Customer@woe.sa'},
     homeAboutButton: { en: 'Learn More', ar: 'اعرف المزيد' },
     homeAboutImageAlt: { en: 'Technician adjusting a wheelchair', ar: 'فني يقوم بتعديل كرسي متحرك' },
     homeProductsTitle: { en: 'Featured Products', ar: 'منتجاتنا المميزة' },
